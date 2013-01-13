@@ -1,0 +1,186 @@
+description = 'Simple JavaEE application reference architecture'
+
+allprojects {
+	group = 'com.github.javarch'
+	 
+	repositories {
+		maven { url 'http://repo.springsource.org/release' }
+		maven { url 'http://repository.primefaces.org' }
+	}
+	
+	project.ext.springFrameworkVersion = '3.2.0.RELEASE'
+	project.ext.springSecurityVersion = '3.1.3.RELEASE'	
+	project.ext.hibernateVersion = '4.1.9.Final'
+	project.ext.slf4jVersion = '1.7.1'
+}
+
+subprojects {
+    apply plugin: 'java'	
+    apply plugin: 'eclipse-wtp'		
+	
+	apply plugin: 'maven'
+	
+	 
+	
+    repositories {
+       mavenCentral()
+    }		
+	
+    dependencies {
+        testCompile 'junit:junit:4.10',
+					"org.springframework:spring-test:${project.springFrameworkVersion}",
+					"com.h2database:h2:1.3.168",
+					"org.mockito:mockito-all:1.9.5"
+				
+		
+		compile "javax.inject:javax.inject:1",
+				'joda-time:joda-time:2.1',
+				'cglib:cglib-nodep:2.2.2',
+				"org.slf4j:slf4j-api:${project.slf4jVersion}",
+				"org.slf4j:slf4j-log4j12:${project.slf4jVersion}",
+				"org.springframework:spring-core:${project.springFrameworkVersion}",				
+				"org.springframework:spring-beans:${project.springFrameworkVersion}",
+				"org.springframework:spring-context:${project.springFrameworkVersion}",
+				"org.springframework:spring-context-support:${project.springFrameworkVersion}",
+				"org.springframework.security:spring-security-web:${project.springSecurityVersion}",
+				"org.springframework.security:spring-security-taglibs:${project.springSecurityVersion}",
+				"org.springframework.security:spring-security-config:${project.springSecurityVersion}",
+				'org.hibernate:hibernate-validator:4.3.0.Final',
+				//aop
+				"org.springframework:spring-aop:${project.springFrameworkVersion}",
+				"org.aspectj:aspectjrt:1.7.0",
+				"org.aspectj:aspectjweaver:1.7.0"
+				
+				
+    }
+	
+	configurations {
+		deployerJars
+	}
+	
+	dependencies {
+		deployerJars "org.apache.maven.wagon:wagon-ssh:1.0-beta-2"
+	}
+	
+	repositories {
+		mavenCentral()
+	}
+    version = '0.1-SNAPSHOT'
+	
+	manifest.mainAttributes(
+		provider: 'gradle',
+		'Implementation-Url': 'http://github.com/luksrn',
+		'Implementation-Version': version,
+		'Implementation-Vendor': 'github.com/luksrn',
+		'Implementation-Vendor-Id': group
+	)
+ 
+     
+	 
+	uploadArchives {
+		repositories {
+			mavenDeployer {
+				def urlRepo = "file://localhost/tmp/mvnrepo/"
+				new File (urlRepo).mkdirs();
+				repository(url: "$urlRepo/release")
+				snapshotRepository(url: "$urlRepo/snapshot/")  
+				/**
+				 * usa ~/.gradle/gradle.properties
+				 *
+				 * urlUploadArchives=
+				 * usuario=
+				 * senha=
+				 *
+				 *
+				configuration = configurations.deployerJars
+				repository(url: urlUploadArchives) {
+					authentication(userName: usuario , password: senha )
+				}
+				*/
+				pom.project {
+					name 'JavArch'
+					description 'Simple JavaEE application reference architecture'
+					url 'http://github.com/luksrn'
+					organization {
+						name 'http://github.com/luksrn'
+						url 'http://github.com/luksrn'
+					}
+					issueManagement {
+						//system 'jira'
+						//url 'http://opensource.atlassian.com/projects/javarch/browse/HHH'
+					}
+					scm {
+						url "http://github.com/luksrn/javarch"
+						connection "scm:git:http://github.com/luksrn/javarch.git"
+						developerConnection "scm:git:git@github.com:luksrn/javarch.git"
+					}
+					licenses {
+						license {
+								name 'The Apache Software License, Version 2.0'
+								url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+								distribution 'repo'
+						}
+					}
+					developers {
+						developer {
+							id 'luksrn'
+							name 'Lucas Farias de Oliveira'
+							organization 'Organization Name'
+							organizationUrl 'Organization Name'
+						}
+					}
+					inceptionYear '2012'
+					
+				}
+			}
+		}
+	}
+	
+}
+
+ 
+
+project('javarch-persistence') {
+
+	description = 'Persistence layer using  Object Relational Mapping with Hibernate 4+ and Springframework 3+'
+	dependencies {
+		compile 	project(':javarch-support'),
+				"org.hibernate:hibernate-core:${project.hibernateVersion}",
+                               "org.hibernate:hibernate-envers:${project.hibernateVersion}",           
+                               "org.springframework:spring-orm:${project.springFrameworkVersion}",
+                               "org.springframework:spring-jdbc:${project.springFrameworkVersion}"
+	}	 
+
+	version = '0.2-SNAPSHOT'
+}
+
+project('javarch-jsf') {
+
+	description = 'View-Controller layer using JavaServer Faces 2.1.7+, PrimeFaces 3.2+ and Springframework 3+'
+	dependencies {
+		compile project(':javarch-persistence'),
+				project(':javarch-support'),
+				"org.springframework:spring-web:${project.springFrameworkVersion}",
+                "org.primefaces:primefaces:3.4.2",
+                "commons-fileupload:commons-fileupload:1.2.2",
+                               "commons-io:commons-io:2.4",
+                               "com.sun.faces:jsf-api:2.1.14",
+                               "com.sun.faces:jsf-impl:2.1.14",
+                               "javax.servlet:servlet-api:2.5"   							
+	}
+	
+	version = '0.1-SNAPSHOT'
+}
+
+
+
+project('javarch-support') {
+
+	description = 'Support module provides utilities classes'
+	dependencies {
+		
+	}
+	
+	version = '0.1-SNAPSHOT'
+}
+ 
