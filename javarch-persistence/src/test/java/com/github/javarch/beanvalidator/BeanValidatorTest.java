@@ -22,11 +22,48 @@ public class BeanValidatorTest {
 
 	@Test
 	public void verificaValidacoes(){
-		BindingResult result = BeanValidator.validate( new User());
-		 
+		// given
+		User user = new User();
+
+		//when
+		BindingResult result = BeanValidator.validate( user );
+		
+		//then
 		Assert.assertNotNull(result);
 		Assert.assertTrue( result.hasErrors() );
-	//	Assert.assertTrue( result.getFieldErrorCount() == 2);		
+		Assert.assertTrue( result.getFieldErrorCount() == 3);		
 	}
 	
+	@Test
+	public void verificaValidacoesEmail(){
+		// given
+		User user = new User();
+
+		//when
+		user.setNomeUsuario("luksrn");
+		user.setEmail("luksrngmail.com");
+		user.setSenha("2343455");
+		BindingResult result = BeanValidator.validate( user );
+		
+		//then
+		Assert.assertNotNull(result);
+		Assert.assertTrue( result.hasErrors() );
+		Assert.assertTrue( result.getFieldErrorCount() == 1);		
+	}
+	
+	@Test
+	public void verificaValidacoesEmailInvalido(){
+		// given
+		User user = new User();
+
+		//when
+		user.setEmail("luksrngmail.com");
+		BindingResult result = BeanValidator.validate( user );
+		
+		//then
+		Assert.assertNotNull(result);
+		Assert.assertTrue( result.hasErrors() );
+		Assert.assertTrue( result.getFieldErrorCount() == 3);		
+	}
+		
 }

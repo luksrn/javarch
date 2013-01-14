@@ -18,7 +18,8 @@ package com.github.javarch.persistence;
 import org.springframework.util.Assert;
 
 /**
- *  
+ *  Objeto responsavel por representar os parametros de paginacao. 
+ *   
  *  @author Lucas Oliveira
  *
  */

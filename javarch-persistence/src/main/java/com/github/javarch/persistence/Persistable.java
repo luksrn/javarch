@@ -29,7 +29,7 @@ import java.io.Serializable;
 public interface Persistable <ID extends Serializable> extends Serializable {
 
 	/**
-	 * 
+	 * Identificador do objeto persistente.
 	 * @return
 	 */
 	ID getId();
@@ -41,8 +41,10 @@ public interface Persistable <ID extends Serializable> extends Serializable {
 	void setId(ID id);
 	
 	/**
-	 * 
-	 * @return
+	 * Verifica se o objeto esta no estado transiente ou persistente/detached.
+	 * Para maiores informacoes sobre os estados dos objetos; 
+	 * {@link  http://docs.jboss.org/hibernate/orm/4.1/manual/en-US/html/ch11.html#objectstate-overview}
+	 * @return true se o objeto estiver no estado novo. false caso contrario.
 	 */
 	boolean isNew();
 }

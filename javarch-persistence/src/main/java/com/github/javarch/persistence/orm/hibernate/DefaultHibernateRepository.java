@@ -127,8 +127,9 @@ public class DefaultHibernateRepository<T extends AbstractPersistable> implement
 
 	
 	public Long count() { 
-		return (Long) createCriteria().setProjection(
+		Long count = (Long) createCriteria().setProjection(
 							Projections.rowCount()).uniqueResult();
+		return (count == null) ? 0L : count;
 	}
 
 	protected Criteria createCriteria() {
