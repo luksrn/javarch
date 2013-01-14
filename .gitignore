@@ -1,0 +1,8 @@
+.gradle
+.classpath
+.settings
+.project
+javarch-jsf/.project
+javarch-jsf/bin
+javarch-persistence/bin
+javarch-support/bin
