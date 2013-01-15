@@ -178,7 +178,7 @@ project('javarch-support') {
 
 	description = 'Support module provides utilities classes'
 	dependencies {
-		
+		compile 'org.apache.commons:commons-lang3:3.0'            
 	}
 	
 	version = '0.1-SNAPSHOT'
