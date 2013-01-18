@@ -1,1 +1,1 @@
-include "javarch-persistence", "javarch-jsf", "javarch-support"
+include "javarch-persistence", "javarch-jsf", "javarch-support", "javarch-spring-mvc"

@@ -173,6 +173,31 @@ project('javarch-jsf') {
 }
 
 
+project('javarch-spring-mvc') {
+
+	description = 'View-Controller layer using Spring MVC 3.2+ and Thymeleaf'
+	dependencies {
+		compile "org.springframework:spring-web:${project.springFrameworkVersion}",
+			"org.springframework:spring-webmvc:${project.springFrameworkVersion}",
+			"org.springframework.security:spring-security-web:${project.springSecurityVersion}",
+			"org.springframework.security:spring-security-taglibs:${project.springSecurityVersion}",
+			"org.springframework.security:spring-security-config:${project.springSecurityVersion}",
+			
+			'org.hibernate:hibernate-validator:4.3.0.Final',
+			"commons-fileupload:commons-fileupload:1.2.2",
+			"commons-io:commons-io:2.4",
+		
+			// Template Engine for XHTML, HTML5
+			"org.thymeleaf:thymeleaf:2.0.14",
+			"org.thymeleaf:thymeleaf-spring3:2.0.14",
+			"org.thymeleaf.extras:thymeleaf-extras-springsecurity3:1.0.0-beta2",
+			"nz.net.ultraq.web.thymeleaf:thymeleaf-layout-dialect:1.0.5"
+		
+	}	
+	version = '0.1-SNAPSHOT'
+}
+ 
+
 
 project('javarch-support') {
 
