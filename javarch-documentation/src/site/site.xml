@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<project name="Maven" xmlns="http://maven.apache.org/DECORATION/1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/DECORATION/1.0.0 http://maven.apache.org/xsd/decoration-1.0.0.xsd">
+   
+    <skin>
+    <groupId>org.apache.maven.skins</groupId>
+    <artifactId>maven-application-skin</artifactId>
+    <version>1.0</version>
+  </skin>
+  
+  <bannerLeft>
+    <name>Arquitetura Java webcore-app</name>
+  </bannerLeft>
+  
+  <body>
+ 
+  
+    <links>
+      <item name="Maven" href="http://maven.apache.org/"/>
+    </links>
+    
+    <menu name="Documentação Arquitetura">            
+      <item name="Overview" href="./overview.html"/>
+      <item name="Persistência"  href="./arquitetura/persistencia/overview.html">
+      	<item name="Utilização Básica" href="./arquitetura/persistencia/utilizacao-basica.html"/>
+      </item>
+      
+      <item name="Visão JavaServer Faces" href="./configurando-um-projeto.html"/>
+      <item name="Visão SpringMVC" href="./configurando-um-projeto.html"/>
+      <item name="Segurança" href="./seguranca-de-um-projeto.html"/>
+      <item name="Suportes" href="./configurando-um-projeto.html"/>
+    </menu>
+    
+    <menu name="Guia de Desenvolvimento">            
+      <item name="Overview" href="./overview.html"/>
+      <item name="Criando um Projeto" href="./configurando-um-projeto.html"/>
+    </menu>
+
+  
+    
+    <menu ref="reports"/>
+    
+  </body>
+</project>

@@ -1,0 +1,34 @@
+<document>
+  <properties>
+    <author email="luksrn@gmail.com">Lucas Oliveira</author>
+    <title>Utilização da camada de persistência</title>
+  </properties>
+  <body>
+    <section name="Introdução">
+      <p>
+      Esta secção demonstra como realizar a configuração de um projeto web Java para utilizar a arquitetura.
+      </p>
+
+	    <subsection name="Configurações do Descritor Web (web.xml)">	    
+	      <p>
+	      	TODO		
+	      </p>
+	    </subsection>
+    </section>
+    
+    
+     <section name="CRUD">
+      <p>
+      .
+      </p>
+
+	    <subsection name="Configurações do Descritor Web (web.xml)">	    
+	      <p>
+	      	TODO		
+	      </p>
+	    </subsection>
+    </section>
+    
+    
+  </body>
+</document>
