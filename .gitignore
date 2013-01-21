@@ -8,3 +8,6 @@ javarch-persistence/bin
 javarch-support/bin
 javarch-documentation/target
 javarch-spring-mvc/bin
+javarch-spring-mvc/build
+javarch-persistence/build
+javarch-support/build
