@@ -6,3 +6,5 @@ javarch-jsf/.project
 javarch-jsf/bin
 javarch-persistence/bin
 javarch-support/bin
+javarch-documentation/target
+javarch-spring-mvc/bin
