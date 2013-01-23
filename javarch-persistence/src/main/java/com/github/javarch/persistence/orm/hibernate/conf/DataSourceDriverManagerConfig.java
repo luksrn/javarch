@@ -26,15 +26,17 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
+import com.github.javarch.support.spring.Profiles;
+
 /**
  * 
  * @author Lucas Oliveira
- *
+ * @deprecated - Use JNDI no lugar!
  */
 @Configuration
 @PropertySource("classpath:datasource.properties")
-@Profile("dev")
-public class DriverManagerDataSourceConfig implements DataSourceConfig {
+@Profile( { Profiles.DEVELOPMENT })
+public class DataSourceDriverManagerConfig implements DataSourceConfig {
 
 	@Autowired
 	private Environment env;
@@ -45,11 +47,13 @@ public class DriverManagerDataSourceConfig implements DataSourceConfig {
 	 */
 	@Bean
 	public DataSource dataSource() {
+	
 		DriverManagerDataSource dataSource = new DriverManagerDataSource();
 		dataSource.setDriverClassName( env.getRequiredProperty("jdbc.driver") );
 		dataSource.setUrl( env.getRequiredProperty("jdbc.url") );
 		dataSource.setUsername( env.getRequiredProperty("jdbc.usuario") );
 		dataSource.setPassword( env.getRequiredProperty("jdbc.senha") );
+		
 		return dataSource;		
 	}
 }

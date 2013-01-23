@@ -95,7 +95,7 @@ public class DefaultHibernateRepository<T extends AbstractPersistable> implement
 		return entity;
 	}
 
-	public void delete(T entity) {
+	public void delete(T entity) {		
 		getCurrentSession().delete(entity);
 	}
 

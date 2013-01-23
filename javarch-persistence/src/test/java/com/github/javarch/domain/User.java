@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.NamedQueries;
@@ -30,6 +31,7 @@ public class User extends AbstractPersistable {
 
 	@NotEmpty
 	@Size(min=3,max=30)
+	@Column(name="nomeusuario")
 	private String nomeUsuario;
 	
 	@NotEmpty
@@ -44,9 +46,11 @@ public class User extends AbstractPersistable {
 	@Cascade({CascadeType.SAVE_UPDATE})
 	private List<Blog> blogs = new ArrayList<Blog>();
 	
+	@Column(name="date_created")
 	@DateCreated
 	private Date dateCreated;
 	
+	@Column(name="last_updated")
 	@LastUpdate
 	private Date lastUpdated;
 	

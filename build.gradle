@@ -31,6 +31,7 @@ subprojects {
 					"org.springframework:spring-test:${project.springFrameworkVersion}",
 					"com.h2database:h2:1.3.168",
 					"org.mockito:mockito-all:1.9.5"
+					
 				
 		
 		compile "javax.inject:javax.inject:1",
@@ -146,9 +147,11 @@ project('javarch-persistence') {
 	dependencies {
 		compile 	project(':javarch-support'),
 				"org.hibernate:hibernate-core:${project.hibernateVersion}",
-                               "org.hibernate:hibernate-envers:${project.hibernateVersion}",           
-                               "org.springframework:spring-orm:${project.springFrameworkVersion}",
-                               "org.springframework:spring-jdbc:${project.springFrameworkVersion}"
+                "org.hibernate:hibernate-envers:${project.hibernateVersion}",           
+                "org.springframework:spring-orm:${project.springFrameworkVersion}",
+                "org.springframework:spring-jdbc:${project.springFrameworkVersion}"
+				 // DB Migration
+				//"com.googlecode.flyway:flyway-core:2.0.3"
 	}	 
 
 	version = '0.2-SNAPSHOT'

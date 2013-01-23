@@ -1,4 +1,5 @@
 /*
+
 * Copyright 2011 the original author or authors.
 *
 * Licensed under the Apache License, Version 2.0 (the "License"); you may not
@@ -23,36 +24,27 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseFactory;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
-import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
+
+import com.github.javarch.support.spring.Profiles;
 
 
 
 @Configuration
-@Profile("test")
-public class H2DataSourceConfig implements DataSourceConfig {	 
+@Profile( Profiles.TEST )
+public class DataSourceH2Config implements DataSourceConfig {	 
 		
-	private static final Logger LOG = LoggerFactory.getLogger(H2DataSourceConfig.class);
-	
-	
+	private final Logger LOG = LoggerFactory.getLogger(DataSourceH2Config.class);
+		
 	@Bean(destroyMethod="shutdown")
-	public  DataSource dataSource() { 		
-		LOG.debug("Iniciando construção do EmbeddedDatabase H2");
+	public  DataSource dataSource()  {
+		
+		LOG.debug("Iniciando construção do EmbeddedDatabase H2...");		
 		EmbeddedDatabaseFactory factory = new EmbeddedDatabaseFactory();		
 		factory.setDatabaseType(EmbeddedDatabaseType.H2);
-		
-		Resource rs = new ClassPathResource("install.sql");
-		if ( rs.exists() ){
-			LOG.debug("Arquivo install.sql detectado no classpath.");
-			ResourceDatabasePopulator populator = new ResourceDatabasePopulator();		
-			populator.addScript( rs );
-			factory.setDatabasePopulator(populator);
-		}
-		
-		return factory.getDatabase();
+		DataSource ds = factory.getDatabase();		
+		return ds;		
 	}
 
 }

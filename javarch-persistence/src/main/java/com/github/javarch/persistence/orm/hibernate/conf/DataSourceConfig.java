@@ -29,5 +29,5 @@ public interface DataSourceConfig {
 	 * 
 	 * @return DataSource
 	 */
-	DataSource dataSource();
+	DataSource dataSource() ;
 }

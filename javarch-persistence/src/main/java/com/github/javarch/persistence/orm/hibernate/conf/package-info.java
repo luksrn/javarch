@@ -1,5 +1,5 @@
 /**
- * Spring Java Configuration para objetos de infraestrutura, como por exemplo o SessionFactory
+ * Spring Java Configuration para objetos de infraestrutura.
  */
 package com.github.javarch.persistence.orm.hibernate.conf;
 

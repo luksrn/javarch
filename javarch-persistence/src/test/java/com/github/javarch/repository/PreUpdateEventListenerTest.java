@@ -17,9 +17,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.github.javarch.domain.User;
 import com.github.javarch.persistence.orm.hibernate.HibernateRepository;
-import com.github.javarch.persistence.orm.hibernate.conf.H2DataSourceConfig;
+import com.github.javarch.persistence.orm.hibernate.conf.DataSourceH2Config;
 import com.github.javarch.persistence.orm.hibernate.conf.HibernateConfig;
 import com.github.javarch.persistence.orm.hibernate.conf.HibernatePropertiesConfig;
+import com.github.javarch.support.spring.Profiles;
 
 
 /**
@@ -32,12 +33,12 @@ import com.github.javarch.persistence.orm.hibernate.conf.HibernatePropertiesConf
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(
 		classes={HibernateConfig.class,
-				H2DataSourceConfig.class,
+				DataSourceH2Config.class,
 				HibernatePropertiesConfig.class},
 		loader=AnnotationConfigContextLoader.class)
 @TransactionConfiguration(defaultRollback=false)
 @Transactional 
-@ActiveProfiles({"test"})
+@ActiveProfiles({ Profiles.TEST , "migration" } )
 public class PreUpdateEventListenerTest {
 
 	@Autowired

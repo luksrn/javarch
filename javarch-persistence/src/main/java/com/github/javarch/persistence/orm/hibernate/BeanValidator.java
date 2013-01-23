@@ -32,7 +32,7 @@ import org.springframework.validation.BindingResult;
  *
  */
 public class BeanValidator {
-	
+		
 	
 	/**
 	 * Realiza a validação de um objeto através da JSR 303.

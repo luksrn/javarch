@@ -20,11 +20,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.DependsOn;
+import org.springframework.core.env.Environment;
 import org.springframework.orm.hibernate4.HibernateTransactionManager;
 import org.springframework.orm.hibernate4.LocalSessionFactoryBean;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
+
+import com.github.javarch.support.spring.Profiles;
 
 
 /**
@@ -40,18 +44,22 @@ import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 public class HibernateConfig {	
 	
 	/**
-	 * DataSourceConf Configuraççao utilizada na construção do SessionFactory
-	 * que irá fornecer um DataSource para o SessionFactory.
+	 * Ambiente no qual a aplicação está executando.
 	 */
 	@Autowired
-	private DataSourceConfig dataSourceConf;
+	private Environment env;
 	
 	/**
-	 * Propriedades do Hibernate
+	 * Propriedades do Hibernate.
 	 */
 	@Autowired
 	private HibernatePropertiesConfig hibernatePropertiesConfig;
 	
+	/**
+	 * DataSource
+	 */
+	@Autowired
+	private DataSourceConfig dataSourceConfig;
 	
 	/**
 	 * Gerenciador de transações.
@@ -59,8 +67,15 @@ public class HibernateConfig {
 	 * @return Uma instância de {@link HibernateTransactionManager}.
 	 */
 	@Bean
+	@DependsOn("sessionFactory")
 	public PlatformTransactionManager transactionManager(){
-		return new HibernateTransactionManager( sessionFactory().getObject() );		
+		
+		HibernateTransactionManager transactionManager =new HibernateTransactionManager(sessionFactory().getObject() ); 		
+		if ( env.acceptsProfiles( Profiles.MULT_TENANT ) ){
+			transactionManager.setAutodetectDataSource(false);
+		} 
+		return transactionManager;
+		
 	}
 	
 	/**
@@ -72,14 +87,20 @@ public class HibernateConfig {
 	 * @see HibernatePropertiesConfig#packagesToScan()
 	 * @see HibernatePropertiesConfig#hibernateProperties()
 	 */
-	@Bean
+	@Bean	
 	public LocalSessionFactoryBean sessionFactory(){
+		
 		LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();		
-		sessionFactory.setPackagesToScan( hibernatePropertiesConfig.packagesToScan());
+		sessionFactory.setPackagesToScan( hibernatePropertiesConfig.packagesToScan());		
 		sessionFactory.setHibernateProperties( hibernatePropertiesConfig.hibernateProperties() );
-		sessionFactory.setDataSource( dataSourceConf.dataSource() );		
+		
+		if ( ! env.acceptsProfiles( Profiles.MULT_TENANT ) ){
+			sessionFactory.setDataSource( dataSourceConfig.dataSource() );
+		}
+		
 		return sessionFactory;
 	}
+	
 	/**
 	 * Para validações javax.validation (JSR-303)
 	 * 
@@ -90,4 +111,5 @@ public class HibernateConfig {
 		return new LocalValidatorFactoryBean();
 	}
 	 
+
 }

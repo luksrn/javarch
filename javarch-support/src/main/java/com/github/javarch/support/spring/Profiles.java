@@ -26,6 +26,10 @@ public interface Profiles {
 	
 	String PRODUCTION = "prod";
 	
+	String MULT_TENANT = "multitenant";
+	
+	String ENVERS = "envers";
+	
 	String HIBERNATE = "hibernate";
 	
 	String JPA = "jpa";

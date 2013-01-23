@@ -1,4 +1,5 @@
 /*
+
 * Copyright 2011 the original author or authors.
 *
 * Licensed under the Apache License, Version 2.0 (the "License"); you may not
@@ -21,6 +22,9 @@ import java.util.List;
 import java.util.Properties;
 
 import org.hibernate.SessionFactory;
+import org.hibernate.cfg.AvailableSettings;
+import org.hibernate.context.spi.CurrentTenantIdentifierResolver;
+import org.hibernate.service.jdbc.connections.spi.MultiTenantConnectionProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,13 +34,13 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.orm.hibernate4.LocalSessionFactoryBean;
 
+import com.github.javarch.persistence.exception.DatabaseConfigurationException;
+import com.github.javarch.support.spring.Profiles;
+
 /**
- * Classe resposável por carregar as propriedades do Hibernate
- * através do arquivo hibernate.properties. presente no classpath da
- * aplicação.
+ * Classe resposável por carregar as propriedades do Hibernate através do arquivo 
+ * hibernate.properties. presente no classpath da aplicação.
  * 
- * Caso o profile <b>envers</b> esteja ativdo as propriedades do envers
- * serão atribuidas.
  * 
  * @author Lucas Oliveira <i>luksrn@gmail.com</i>
  *
@@ -45,8 +49,22 @@ import org.springframework.orm.hibernate4.LocalSessionFactoryBean;
 @PropertySource("classpath:hibernate.properties")
 public class HibernatePropertiesConfig  {
 	
-	@Autowired
+	@Autowired	
 	private Environment env;
+	
+	/**
+	 * Injetado opcionalmente, apenas se o perfil {@link Profiles#MULT_TENANT} estiver ativo.
+	 */
+	@Autowired(required=false)
+	private CurrentTenantIdentifierResolver currentIdentifierResolver;
+	
+
+	/**
+	 * Injetado opcionalmente, apenas se o perfil {@link Profiles#MULT_TENANT} estiver ativo.
+	 */
+	@Autowired(required=false)
+	private MultiTenantConnectionProvider multiTenantConnectionProvider;
+	
 	
 	private final Logger log = LoggerFactory.getLogger(getClass());
 	
@@ -66,7 +84,7 @@ public class HibernatePropertiesConfig  {
 			String property = env.getRequiredProperty("hibernate.packscan");				
 			String pacotesSplit [] = property.split(";");
 			for (String pacote : pacotesSplit) {
-				pacotes.add(pacote);		
+				pacotes.add( pacote );		
 			}
 			if ( log.isDebugEnabled() && pacotes.isEmpty() ){
 				log.debug("Nenhum pacote de entidades persistentes foi mapeado no arquivo hibernate.properties. Para registrar suas entidades persistentes use a propriedade hibernate.packscan para definir os pacotes.");
@@ -82,23 +100,45 @@ public class HibernatePropertiesConfig  {
 	}
 
 	/**
+	 * Retorna um objeto Properties com todas as configurações de propriedades que devem
+	 * ser passadas ao {@link SessionFactory}. As propriedades são definidas no arquivo
+	 * hibernate.properties que deve estar presente no raiz do classpath.
 	 * 
-	 * @return
+	 * @return Properties do Hibernate.
 	 */
-	@Bean 
+	@Bean 	
 	public Properties hibernateProperties() {
-		Properties  props = new Properties();
 		
-		props.put( "hibernate.dialect", env.getRequiredProperty("hibernate.dialect") );
-		props.put( "hibernate.hbm2ddl.auto", env.getProperty("hibernate.hbm2ddl.auto","update")  );
-		props.put( "hibernate.show_sql", env.getProperty("hibernate.show_sql",Boolean.class , false ));	
-		props.put( "hibernate.format_sql", env.getProperty("hibernate.format_sql", Boolean.class, false));
-		if ( env.acceptsProfiles("envers") ){
-			props.put("org.hibernate.envers.versionsTableSuffix","_audit");
-			props.put("org.hibernate.envers.revisionFieldName","revision");    	
-			props.put("org.hibernate.envers.default_schema", "audit"); 
+		Properties props = new Properties();		
+		
+		props.put( AvailableSettings.DIALECT , env.getRequiredProperty( AvailableSettings.DIALECT ) );	
+		props.put( AvailableSettings.SHOW_SQL , env.getProperty( AvailableSettings.SHOW_SQL , Boolean.class , false ));	
+		props.put( AvailableSettings.FORMAT_SQL , env.getProperty (  AvailableSettings.FORMAT_SQL , Boolean.class, false));
+		
+		if( env.acceptsProfiles( Profiles.TEST )){
+			props.put( AvailableSettings.HBM2DDL_AUTO, env.getProperty(  AvailableSettings.HBM2DDL_AUTO , "update" )  );
 		}
 		
+		if ( env.acceptsProfiles( Profiles.MULT_TENANT )){
+			if ( log.isDebugEnabled() ){
+				log.debug("Profile Multi Tenancy ativado! Realizando configuração...");
+			}
+			if ( currentIdentifierResolver == null || env.acceptsProfiles(Profiles.PRODUCTION )){
+				throw new DatabaseConfigurationException("Não foi encontrado nenhum objeto CurrentIdentifierResolver.");
+			}			
+			props.put( AvailableSettings.MULTI_TENANT_IDENTIFIER_RESOLVER , currentIdentifierResolver );
+			props.put( AvailableSettings.DATASOURCE , env.getRequiredProperty( AvailableSettings.DATASOURCE ));
+			props.put( AvailableSettings.MULTI_TENANT_CONNECTION_PROVIDER , multiTenantConnectionProvider);
+			props.put( AvailableSettings.MULTI_TENANT , env.getRequiredProperty( AvailableSettings.MULTI_TENANT ) );
+		}
+		
+		
+	    if ( env.acceptsProfiles( Profiles.ENVERS ) ){
+			props.put( "org.hibernate.envers.versionsTableSuffix","_audit");
+			props.put( "org.hibernate.envers.revisionFieldName","revision");    	
+			props.put( "org.hibernate.envers.default_schema", "audit"); 
+		}
+								
 		return props;
 	} 	
 }
