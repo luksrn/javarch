@@ -12,6 +12,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.Size;
 
+import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.validator.constraints.Email;
@@ -25,6 +26,7 @@ import com.github.javarch.persistence.orm.hibernate.AbstractPersistable;
 @NamedQueries({
 	@NamedQuery(name = "User.findAll", query = "SELECT u FROM User u"),
 	@NamedQuery(name = "User.findByEmail", query = "SELECT u FROM User u WHERE u.email = :email")})
+//@Cache(usage=CacheConcurrencyStrategy.READ_ONLY)
 public class User extends AbstractPersistable {	
 
 	private static final long serialVersionUID = -6505315871503702108L;
@@ -44,6 +46,7 @@ public class User extends AbstractPersistable {
 	
 	@OneToMany(mappedBy="dono",fetch=FetchType.LAZY)	
 	@Cascade({CascadeType.SAVE_UPDATE})
+	@BatchSize(size=10)
 	private List<Blog> blogs = new ArrayList<Blog>();
 	
 	@Column(name="date_created")

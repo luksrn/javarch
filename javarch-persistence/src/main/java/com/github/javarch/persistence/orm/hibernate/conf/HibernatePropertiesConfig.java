@@ -21,6 +21,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
+import net.sf.ehcache.hibernate.EhCacheRegionFactory;
+
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.context.spi.CurrentTenantIdentifierResolver;
@@ -128,8 +130,12 @@ public class HibernatePropertiesConfig  {
 			props.put( AvailableSettings.DATASOURCE , env.getRequiredProperty( AvailableSettings.DATASOURCE ));
 			props.put( AvailableSettings.MULTI_TENANT_CONNECTION_PROVIDER , multiTenantConnectionProvider);
 			props.put( AvailableSettings.MULTI_TENANT , env.getRequiredProperty( AvailableSettings.MULTI_TENANT ) );
+		}  else {			
+			
+			props.put( AvailableSettings.USE_SECOND_LEVEL_CACHE, true);
+			props.put( AvailableSettings.USE_QUERY_CACHE, true	); 
+			props.put( AvailableSettings.CACHE_REGION_FACTORY , "org.hibernate.cache.ehcache.EhCacheRegionFactory" ); 
 		}
-		
 		
 	    if ( env.acceptsProfiles( Profiles.ENVERS ) ){
 			props.put( "org.hibernate.envers.versionsTableSuffix","_audit");
