@@ -6,9 +6,10 @@ allprojects {
 	repositories {
 		maven { url 'http://repo.springsource.org/release' }
 		maven { url 'http://repository.primefaces.org' }
+		maven { url 'http://repository.jboss.org/nexus/content/groups/public' }
 	}
 	
-	project.ext.springFrameworkVersion = '3.2.0.RELEASE'
+	project.ext.springFrameworkVersion = '3.2.1.RELEASE'
 	project.ext.springSecurityVersion = '3.1.3.RELEASE'	
 	project.ext.hibernateVersion = '4.1.9.Final'
 	project.ext.slf4jVersion = '1.7.1'
@@ -149,9 +150,10 @@ project('javarch-persistence') {
 				"org.hibernate:hibernate-core:${project.hibernateVersion}",
                 "org.hibernate:hibernate-envers:${project.hibernateVersion}",           
                 "org.springframework:spring-orm:${project.springFrameworkVersion}",
-                "org.springframework:spring-jdbc:${project.springFrameworkVersion}"
+                "org.springframework:spring-jdbc:${project.springFrameworkVersion}",
+				"org.hibernate:hibernate-c3p0:${project.hibernateVersion}"
 				 // DB Migration
-				//"com.googlecode.flyway:flyway-core:2.0.3"
+				"com.googlecode.flyway:flyway-core:2.0.3"
 	}	 
 
 	version = '0.2-SNAPSHOT'
