@@ -151,7 +151,8 @@ project('javarch-persistence') {
                 "org.hibernate:hibernate-envers:${project.hibernateVersion}",           
                 "org.springframework:spring-orm:${project.springFrameworkVersion}",
                 "org.springframework:spring-jdbc:${project.springFrameworkVersion}",
-				"org.hibernate:hibernate-c3p0:${project.hibernateVersion}"
+				"org.hibernate:hibernate-c3p0:${project.hibernateVersion}",
+				"org.hibernate:hibernate-ehcache:${project.hibernateVersion}",				
 				 // DB Migration
 				"com.googlecode.flyway:flyway-core:2.0.3"
 	}	 
