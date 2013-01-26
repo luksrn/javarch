@@ -24,6 +24,7 @@ import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.StatelessSession;
 import org.hibernate.criterion.Example;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
@@ -84,7 +85,10 @@ public class DefaultHibernateRepository<T extends AbstractPersistable> implement
 		return sf.getCurrentSession();
 	}
 
-
+	protected StatelessSession openStatelessSession(){
+		return sf.openStatelessSession();
+	}
+	
 	public T save(T entity) {
 		if ( entity.isNew() ){
 			getCurrentSession().save(entity);
