@@ -112,8 +112,6 @@ public class HibernatePropertiesConfig  {
 		Properties props = new Properties();		
 		
 		props.put( AvailableSettings.DIALECT , env.getRequiredProperty( AvailableSettings.DIALECT ) );	
-		props.put( AvailableSettings.SHOW_SQL , env.getProperty( AvailableSettings.SHOW_SQL , Boolean.class , false ));	
-		props.put( AvailableSettings.FORMAT_SQL , env.getProperty (  AvailableSettings.FORMAT_SQL , Boolean.class, false));
 		
 		if( env.acceptsProfiles( Profiles.TEST )){
 			props.put( AvailableSettings.HBM2DDL_AUTO, env.getProperty(  AvailableSettings.HBM2DDL_AUTO , "update" )  );

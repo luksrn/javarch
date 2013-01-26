@@ -24,14 +24,13 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 import com.github.javarch.support.spring.Profiles;
+import com.mchange.v2.c3p0.ComboPooledDataSource;
 
 /**
  * 
  * @author Lucas Oliveira
- * @deprecated - Use JNDI no lugar!
  */
 @Configuration
 @PropertySource("classpath:datasource.properties")
@@ -39,21 +38,45 @@ import com.github.javarch.support.spring.Profiles;
 public class DataSourceDriverManagerConfig implements DataSourceConfig {
 
 	@Autowired
-	private Environment env;
+	private Environment env;	
 	
 	/**
 	 * 
 	 * @return
 	 */
-	@Bean
+	@Bean(destroyMethod="close")
 	public DataSource dataSource() {
-	
-		DriverManagerDataSource dataSource = new DriverManagerDataSource();
-		dataSource.setDriverClassName( env.getRequiredProperty("jdbc.driver") );
-		dataSource.setUrl( env.getRequiredProperty("jdbc.url") );
-		dataSource.setUsername( env.getRequiredProperty("jdbc.usuario") );
-		dataSource.setPassword( env.getRequiredProperty("jdbc.senha") );
-		
-		return dataSource;		
+		try {
+			ComboPooledDataSource dataSource = new ComboPooledDataSource();
+
+			dataSource.setDriverClass( env.getRequiredProperty("jdbc.driver") );
+			dataSource.setJdbcUrl( env.getRequiredProperty("jdbc.url") );
+			dataSource.setUser( env.getRequiredProperty("jdbc.usuario") );
+			dataSource.setPassword( env.getRequiredProperty("jdbc.senha") );
+			// poll size
+			dataSource.setInitialPoolSize( 5 );
+			dataSource.setMinPoolSize( 10 );
+			dataSource.setMaxPoolSize( 25 );
+			dataSource.setAcquireIncrement(3);
+			dataSource.setMaxStatements(0);
+			// retries
+			dataSource.setAcquireRetryAttempts(30);
+			dataSource.setAcquireRetryDelay( 1000 ); // 1s
+			dataSource.setBreakAfterAcquireFailure(false);		
+			// Refresh connections
+			dataSource.setMaxIdleTime(180); // 3min		
+			dataSource.setMaxConnectionAge( 10 );
+			// timeout testing
+			dataSource.setCheckoutTimeout(5000); //5s
+			dataSource.setIdleConnectionTestPeriod(60);
+			dataSource.setTestConnectionOnCheckout(true);
+			dataSource.setPreferredTestQuery("SELECT 1+1");
+					
+			return dataSource;
+		}catch(Exception e){
+			e.printStackTrace();
+			return null;
+		}
+				
 	}
 }
