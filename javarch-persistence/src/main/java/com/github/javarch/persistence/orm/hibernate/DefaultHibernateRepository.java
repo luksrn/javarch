@@ -79,9 +79,9 @@ public class DefaultHibernateRepository<T extends AbstractPersistable> implement
 	}	
 	
 	protected Class<T> getClazz() {
-		checkState(  genericClass == null, "Não foi possível identificar qual Class será recuperada será utilizada.. " +
+	/*	checkState(  genericClass == null, "Não foi possível identificar qual Class será recuperada será utilizada.. " +
 				"É necessário chamar o método setClazz(Class<T> ) para definir o tipo do ojbeto " +
-				"que está sendo manipilado");	
+				"que está sendo manipilado");	*/
 		return genericClass;
 	}
 

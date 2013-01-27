@@ -2,6 +2,11 @@ package com.github.javarch.support.utils;
 
 import java.util.Date;
 
+/**
+ * 
+ * @author luksrn
+ *
+ */
 public class DateRange {
 
 	private Date _start;

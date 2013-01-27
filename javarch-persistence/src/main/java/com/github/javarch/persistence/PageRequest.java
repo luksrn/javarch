@@ -17,6 +17,8 @@ package com.github.javarch.persistence;
 
 import static com.google.common.base.Preconditions.*;
 
+import com.google.common.base.Objects;
+
 /**
  *  Objeto responsavel por representar os parametros de paginacao. 
  *   
@@ -52,11 +54,7 @@ public class PageRequest {
 
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + maxPerPage;
-		result = prime * result + startingAt;
-		return result;
+		return Objects.hashCode(maxPerPage, startingAt);
 	}
 
 	@Override
@@ -77,9 +75,6 @@ public class PageRequest {
 
 	@Override
 	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		builder.append("PageRequest [startingAt=").append(startingAt)
-				.append(", maxPerPage=").append(maxPerPage).append("]");
-		return builder.toString();
+		return Objects.toStringHelper(this).add("startingAt",startingAt).add("maxPerPage", maxPerPage).toString();		
 	}	
 }
