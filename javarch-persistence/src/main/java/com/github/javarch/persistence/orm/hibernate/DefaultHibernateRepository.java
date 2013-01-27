@@ -20,6 +20,8 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map.Entry;
 
+import javax.persistence.Entity;
+
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -43,6 +45,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.github.javarch.persistence.NamedQueryParameter;
 import com.github.javarch.persistence.PageRequest;
 import com.github.javarch.persistence.QueryParameter;
+import static com.google.common.base.Preconditions.*;
 
 
 /**
@@ -69,13 +72,14 @@ public class DefaultHibernateRepository<T extends AbstractPersistable> implement
 		this.sf = sf;		
 	}
 	
-	public void setClazz( Class< T > clazzToSet ){		
-	      this.genericClass = clazzToSet;
+	public void setClazz( Class< T > clazzToSet ){	
+		checkNotNull(clazzToSet, "setClazz não pode ser recebecer um objeto Null");	 
+		checkArgument( clazzToSet.isAnnotationPresent(Entity.class) , "Class<T> não possui anotação @Entity." );
+	    this.genericClass = clazzToSet;
 	}	
 	
 	protected Class<T> getClazz() {
-		if ( genericClass == null ) 
-				throw new IllegalStateException("Não foi possível identificar qual Class será recuperada no método findOne. " +
+		checkState(  genericClass == null, "Não foi possível identificar qual Class será recuperada será utilizada.. " +
 				"É necessário chamar o método setClazz(Class<T> ) para definir o tipo do ojbeto " +
 				"que está sendo manipilado");	
 		return genericClass;
