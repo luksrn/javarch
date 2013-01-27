@@ -15,7 +15,7 @@
 */
 package com.github.javarch.persistence;
 
-import org.springframework.util.Assert;
+import static com.google.common.base.Preconditions.*;
 
 /**
  *  Objeto responsavel por representar os parametros de paginacao. 
@@ -36,8 +36,8 @@ public class PageRequest {
 	 * @param maxPerPage  the maximum number of results
 	 */
 	public PageRequest(int startingAt, int maxPerPage) {
-		Assert.isTrue(startingAt >= 0, "startingAt must be >= 0");
-		Assert.isTrue(maxPerPage >= 0, "maxPerPage must be >= 0");
+		checkArgument(startingAt >= 0, "startingAt must be >= 0");
+		checkArgument(maxPerPage >= 0, "maxPerPage must be >= 0");
 		this.startingAt = startingAt;
 		this.maxPerPage = maxPerPage;
 	}

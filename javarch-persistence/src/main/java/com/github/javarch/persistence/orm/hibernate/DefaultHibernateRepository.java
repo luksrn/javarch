@@ -113,7 +113,7 @@ public class DefaultHibernateRepository<T extends AbstractPersistable> implement
 
 
 	public T getReference(Serializable id) {
-		return (T)getCurrentSession().byId(genericClass).getReference(id);
+		return (T)getCurrentSession().byId(getClazz()).getReference(id);
 	}
 	
 	@SuppressWarnings("unchecked")
