@@ -8,6 +8,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
+import org.hibernate.annotations.BatchSize;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.Filter;
+import org.hibernate.annotations.FilterDef;
+import org.hibernate.annotations.ParamDef;
+
 import com.github.javarch.persistence.Persistable;
 
 /**
@@ -19,6 +26,13 @@ import com.github.javarch.persistence.Persistable;
  * @param <PK>
  */
 @MappedSuperclass
+@Filter(name="ativosOuInativos",condition="ativo = :status")
+@FilterDef(name="ativosOuInativos",parameters={
+		@ParamDef(type="boolean",name="status")
+})
+@BatchSize(size=30)
+@DynamicInsert
+@DynamicUpdate
 public abstract class AbstractPersistable implements Persistable<Long> ,Serializable {
 
 
@@ -28,6 +42,11 @@ public abstract class AbstractPersistable implements Persistable<Long> ,Serializ
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
+	/**
+	 * Flag que indica se o registro está ativo ou não. Exclusão lógica.
+	 * 
+	 */
+	private Boolean ativo = Boolean.TRUE;
 	/**
 	 * Obtém o valor do Identificador da entidade.
 	 */
@@ -60,7 +79,7 @@ public abstract class AbstractPersistable implements Persistable<Long> ,Serializ
 	 * Representação padrão de uma classe de dominio.
 	 */
 	@Override
-	public String toString() {
+	public String toString() {		
 		return new StringBuilder("Entity ")
 			.append(this.getClass().getSimpleName() )
 			.append( " with id = ")

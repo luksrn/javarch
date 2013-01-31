@@ -4,17 +4,22 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.BatchSize;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.SQLUpdate;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -23,10 +28,12 @@ import com.github.javarch.persistence.annotation.LastUpdate;
 import com.github.javarch.persistence.orm.hibernate.AbstractPersistable;
 
 @Entity
+@AttributeOverride( name="id", column = @Column(name="idUser") )
 @NamedQueries({
 	@NamedQuery(name = "User.findAll", query = "SELECT u FROM User u"),
 	@NamedQuery(name = "User.findByEmail", query = "SELECT u FROM User u WHERE u.email = :email")})
-//@Cache(usage=CacheConcurrencyStrategy.READ_ONLY)
+@Cache(usage=CacheConcurrencyStrategy.READ_ONLY)
+@SQLUpdate(sql="UPDATE user SET ativo = 0 where idUser = ?")
 public class User extends AbstractPersistable {	
 
 	private static final long serialVersionUID = -6505315871503702108L;
@@ -47,6 +54,7 @@ public class User extends AbstractPersistable {
 	@OneToMany(mappedBy="dono",fetch=FetchType.LAZY)	
 	@Cascade({CascadeType.SAVE_UPDATE})
 	@BatchSize(size=10)
+	@OrderBy("dataCriacao DESC")
 	private List<Blog> blogs = new ArrayList<Blog>();
 	
 	@Column(name="date_created")
