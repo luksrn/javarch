@@ -1,0 +1,58 @@
+<document>
+  <properties>
+    <author email="luksrn@gmail.com">Lucas Oliveira</author>
+    <title>Utilização da camada de persistência</title>
+  </properties>
+  <body>
+    <section name="Introdução">
+      <p>
+      Esta secção descreve todos os rationales por trás das decisões da construção da camada de persistência.
+      </p>
+
+	    <subsection name="DataSource">	    
+	      <p>
+
+org.springframework.jdbc.datasource.DriverManagerDataSource
+
+Simple implementation of the standard JDBC javax.sql.DataSource interface, configuring the plain old JDBC java.sql.DriverManager via bean properties, and returning a new java.sql.Connection from every getConnection call.
+
+NOTE: This class is not an actual connection pool; it does not actually pool Connections. It just serves as simple replacement for a full-blown connection pool, implementing the same standard interface, but creating new Connections on every call.
+
+Useful for test or standalone environments outside of a J2EE container, either as a DataSource bean in a corresponding ApplicationContext or in conjunction with a simple JNDI environment. Pool-assuming Connection.close() calls will simply close the Connection, so any DataSource-aware persistence code should work.
+
+NOTE: Within special class loading environments such as OSGi, this class is effectively superseded by SimpleDriverDataSource due to general class loading issues with the JDBC DriverManager that be resolved through direct Driver usage (which is exactly what SimpleDriverDataSource does).
+
+In a J2EE container, it is recommended to use a JNDI DataSource provided by the container. Such a DataSource can be exposed as a DataSource bean in a Spring ApplicationContext via org.springframework.jndi.JndiObjectFactoryBean, for seamless switching to and from a local DataSource bean like this class. For tests, you can then either set up a mock JNDI environment through Spring's org.springframework.mock.jndi.SimpleNamingContextBuilder, or switch the bean definition to a local DataSource (which is simpler and thus recommended).
+
+If you need a "real" connection pool outside of a J2EE container, consider Apache's Jakarta Commons DBCP or C3P0. Commons DBCP's BasicDataSource and C3P0's ComboPooledDataSource are full connection pool beans, supporting the same basic properties as this class plus specific settings (such as minimal/maximal pool size etc).
+
+----
+ 2 down vote accepted
+	
+
+Java runtime class NamingManager serves as the link between a Java application and its naming directory. When a SimpleNamingContextBuilder activates, it installs itself to static member InitialContextFactoryBuilder in NamingManager. When the application creates an InitialContext to retrieve the JNDI context, class InitialContext delegates to NamingManager, which in turn asks the IntialContextFactoryBuilder (in this case, SimpleNamingContextBuilder) to create an IntialContextFactory, which ultimately creates the InitialContext.
+
+JndiObjectFactoryBean doesn't need an explicit context environment because SimpleNamingContextBuilder provides the InitialContextFactory to the NamingManager and JndiObjectFactoryBean uses the NamingManager to retrieve its resources. So, in the earlier answer, JndiObjectFactoryBean "knows" to search the Spring naming directory for resource my-db because SimpleNamingContextBuilder has established itself as the JNDI provider in the NamingManager.
+
+http://stackoverflow.com/questions/5682732/how-does-an-application-that-uses-springs-simplenamingcontextbuilder-know-to-se
+
+	      </p>
+	    </subsection>
+    </section>
+    
+    
+     <section name="CRUD">
+      <p>
+      .
+      </p>
+
+	    <subsection name="Configurações do Descritor Web (web.xml)">	    
+	      <p>
+	      	TODO		
+	      </p>
+	    </subsection>
+    </section>
+    
+    
+  </body>
+</document>

@@ -9,9 +9,15 @@
       Esta secção demonstra como realizar a configuração de um projeto web Java para utilizar a arquitetura.
       </p>
 
-	    <subsection name="Configurações do Descritor Web (web.xml)">	    
+	    <subsection name="Configurações do Hibernate">	    
 	      <p>
-	      	TODO		
+
+
+http://www.slideshare.net/rponte/hibernate-efetivo-qconsp2012
+http://blog.caelum.com.br/os-7-habitos-dos-desenvolvedores-hibernate-e-jpa-altamente-eficazes/
+http://www.ehcache.org/documentation/user-guide/hibernate
+http://www.javacraft.org/2012/03/migrate-to-hibernate-4-ehcache.html
+https://community.jboss.org/wiki/HowToConfigureTheC3P0ConnectionPool
 	      </p>
 	    </subsection>
     </section>
@@ -22,9 +28,19 @@
       .
       </p>
 
-	    <subsection name="Configurações do Descritor Web (web.xml)">	    
+	    <subsection name="Boas práticas - Hibernate">	    
 	      <p>
-	      	TODO		
+Abaixo temos algumas recomendações para melhorar o desempenho de aplicações com JPA e Hibernate
+
+ *   Utilizar a annotation @BatchSize(size=TAMANHO) para melhorar o desempenho em entidades que recuperam vários registros.
+ *   Utilizar join fetch ao invés de relacionamentos EAGER para coleções. Dessa forma evitará LazyInitializationException e carregar vários dados em memória com o EAGER.
+ *   Utilizar EAGER em anotações @ManyToMany e @OneToMany somente em coleções que temos certeza que são pequenas, por exemplo com uns 5 registros no máximo.
+  
+ *   Evitar utilizar o Collections.sort e utilizar o order by do jpa.
+ 
+ *   Utilizar Named Queries para facilitar o gerenciamento.
+*    Utilizar setFirstResult, setMaxResults da classe Query em locais onde é desejado paginação ou retornam muitos resultados.
+
 	      </p>
 	    </subsection>
     </section>
