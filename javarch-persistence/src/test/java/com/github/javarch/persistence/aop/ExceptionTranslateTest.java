@@ -12,6 +12,7 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.github.javarch.domain.User;
+import com.github.javarch.persistence.exception.DataBaseException;
 import com.github.javarch.persistence.orm.hibernate.HibernateRepository;
 import com.github.javarch.persistence.orm.hibernate.conf.DataSourceH2Config;
 import com.github.javarch.persistence.orm.hibernate.conf.HibernateConfig;
@@ -32,9 +33,9 @@ public class ExceptionTranslateTest {
 	@Autowired
 	private HibernateRepository<User> defaultRepository;	
 
-	@Test
+	@Test(expected=DataBaseException.class)
 	public void testNullInsert(){
-		defaultRepository.delete(null);
+		defaultRepository.delete(new User());
 	}
 	
 

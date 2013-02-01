@@ -57,11 +57,11 @@ public class User extends AbstractPersistable {
 	@OrderBy("dataCriacao DESC")
 	private List<Blog> blogs = new ArrayList<Blog>();
 	
-	@Column(name="date_created")
+	@Column(name="DATA_CRIACAO")
 	@DateCreated
 	private Date dateCreated;
 	
-	@Column(name="last_updated")
+	@Column(name="DATA_ATUALIZACAO")
 	@LastUpdate
 	private Date lastUpdated;
 	

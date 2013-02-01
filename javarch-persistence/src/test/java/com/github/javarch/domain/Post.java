@@ -28,14 +28,14 @@ import com.github.javarch.persistence.orm.hibernate.AbstractPersistable;
 @Entity
 @AttributeOverride(name="id",column=@Column(name="idPost"))
 @SQLDelete(sql="UPDATE post SET ativo = 0 WHERE idPost = ?")
-@NamedNativeQueries({
+/*@NamedNativeQueries({
 	@NamedNativeQuery(name="Post.exibePost",query="SELECT * FROM post")
 })
 @SqlResultSetMappings({
 	@SqlResultSetMapping(name="Post.exibePost",entities={
 			@EntityResult(entityClass=Post.class,fields={@FieldResult(name="titulo",column="titulo")})
 			})
-})
+})*/
 public class Post extends AbstractPersistable {
 
 	@NotEmpty

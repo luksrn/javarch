@@ -73,7 +73,7 @@ public class DataSourceDriverManagerConfig implements DataSourceConfig {
 			dataSource.setPreferredTestQuery("SELECT 1+1");
 					
 			return dataSource;
-		}catch(Exception e){
+		}catch(Exception e){			
 			e.printStackTrace();
 			return null;
 		}

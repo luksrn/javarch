@@ -22,5 +22,4 @@ public class PasswordGeneratorTest {
 		//then
 		Assert.isTrue( pattern.matcher(pw).matches() );
 	}
-
 }

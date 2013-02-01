@@ -97,6 +97,7 @@ public class HibernateConfig {
 		if ( ! env.acceptsProfiles( Profiles.MULT_TENANT ) ){
 			sessionFactory.setDataSource( dataSourceConfig.dataSource() );
 		}
+		// Analisar viabilidade de second level cache em multitenancy.
 		
 		return sessionFactory;
 	}
