@@ -25,4 +25,19 @@ public class DateRange {
 		return _end;
 	}
  
+	/**
+	 * Verifica se os intervalos de data se sobrepõem.
+	 * 
+	 *  @see http://c2.com/cgi/wiki?TestIfDateRangesOverlap
+	 * 
+	 * @param fromDateRange
+	 * @return
+	 */
+	public boolean overLap(DateRange fromDateRange){
+		Date start2 = fromDateRange.getStart();
+		Date end2 = fromDateRange.getEnd();
+		
+		return (_start.getTime() <= end2.getTime() && start2.getTime() <= _end.getTime())
+				|| ( _start.getTime() == start2.getTime() && ( _start.getTime() == _end.getTime() || start2.getTime() == end2.getTime()));
+	}
 }
