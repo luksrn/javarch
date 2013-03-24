@@ -1,0 +1,38 @@
+<document>
+  <properties>
+    <author email="luksrn@gmail.com">Lucas Oliveira</author>
+    <title>Monitorando projetos Web e Arquitetura</title>
+  </properties>
+  <body>
+    <section name="Introdução">
+      <p>
+ When you are running long term applications like web applications, it is good to know some statistics about them, like number of requests served, request durations, or the number active requests.
+But also some more generic information like the state of your internal collections, how many times some portion of code is being executed, or health checks like database availability, or any kind of connection to an external system.
+
+Metrics provides a powerful way to measure the behaviour of your critical components and reporting them to a variety of systems like, JConsole, System Console, Ganglia, Graphite, CSV, or making them available through a web server
+      </p>
+
+
+	    <subsection name="Conhecendo os tipos de métricas">	    
+	      <p>
+
+Now it is time to add some metrics to our code. In Metrics we can use 6 types of metrics:
+
+<ul>
+    <li>Gauges: an instantaneous measurement of a discrete value.</li>
+    <li> Counters: a value that can be incremented and decremented. Can be used in queues to monitorize the remaining number of pending jobs.</li>
+    <li> Meters: measure the rate of events over time. You can specify the rate unit, the scope of events or event type.</li>
+    <li> Histograms: measure the statistical distribution of values in a stream of data.
+    <li> Timers: measure the amount of time it takes to execute a piece of code and the distribution of its duration.</li>
+    <li> Healthy checks: as his name suggests, it centralize our service’s healthy checks of external systems.</li>
+</ul>
+	     
+
+
+	      </p>
+	    </subsection>
+
+http://www.javacodegeeks.com/2012/12/yammer-metrics-a-new-way-to-monitor-your-application.html
+    </section>
+  </body>
+</document>

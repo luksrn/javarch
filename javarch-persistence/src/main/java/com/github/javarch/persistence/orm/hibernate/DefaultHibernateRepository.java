@@ -45,6 +45,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.github.javarch.persistence.NamedQueryParameter;
 import com.github.javarch.persistence.PageRequest;
 import com.github.javarch.persistence.QueryParameter;
+import com.google.common.base.Preconditions;
+
 import static com.google.common.base.Preconditions.*;
 
 

@@ -19,7 +19,6 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
-import org.hibernate.annotations.SQLUpdate;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -32,8 +31,8 @@ import com.github.javarch.persistence.orm.hibernate.AbstractPersistable;
 @NamedQueries({
 	@NamedQuery(name = "User.findAll", query = "SELECT u FROM User u"),
 	@NamedQuery(name = "User.findByEmail", query = "SELECT u FROM User u WHERE u.email = :email")})
-@Cache(usage=CacheConcurrencyStrategy.READ_ONLY)
-@SQLUpdate(sql="UPDATE user SET ativo = 0 where idUser = ?")
+@Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
+//@SQLUpdate(sql="UPDATE User SET ativo = 0 where idUser = ?") // check this 
 public class User extends AbstractPersistable {	
 
 	private static final long serialVersionUID = -6505315871503702108L;
