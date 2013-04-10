@@ -12,6 +12,8 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import com.github.javarch.jsf.context.MessageContext;
+
 import static org.mockito.Mockito.*;
 
 @Ignore

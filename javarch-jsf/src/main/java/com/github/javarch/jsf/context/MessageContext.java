@@ -1,4 +1,4 @@
-package com.github.javarch.jsf;
+package com.github.javarch.jsf.context;
 
 import java.text.MessageFormat;
 import java.util.List;
@@ -30,6 +30,10 @@ public class MessageContext {
 	}
 
 
+	public void addInfo(String idComponent, String msg, Object ...params ){
+		
+	}
+
 	/**
 	 * Adiciona a mensagem da variável <i>msg</i> ao FacesContext. A mensagem adicionada terá
 	 * o severity do tipo FacesMessage.SEVERITY_ERROR e não será associada à nenhum componente.
@@ -40,6 +44,9 @@ public class MessageContext {
 		add(msg,  FacesMessage.SEVERITY_ERROR, params);
 	}
 	
+	public void addError(String idComponent, String msg, Object ...params ){
+		
+	}
 	private void add(String msg, Severity tipo, Object ... params) {		
 		if (  msg != null && !msg.isEmpty() ){
 			String mensagemFormatada = MessageFormat.format(msg, params);		
