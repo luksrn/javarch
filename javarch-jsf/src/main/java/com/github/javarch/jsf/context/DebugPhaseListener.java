@@ -9,8 +9,6 @@ import javax.faces.event.PhaseListener;
 import org.slf4j.Logger;
  
  
-
-
 /**
  * @author  Neil Griffin
  */

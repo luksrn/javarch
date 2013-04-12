@@ -13,7 +13,7 @@ public class FacesContextUtils {
 	 * 
 	 * @return
 	 */
-	protected FacesContext getFacesContext(){
+	public FacesContext getFacesContext(){
 		return FacesContext.getCurrentInstance();
 	}
 
@@ -22,7 +22,7 @@ public class FacesContextUtils {
 	 * Obtém o ExternalContext
 	 * @return
 	 */
-	protected ExternalContext getExternalContext(){
+	public ExternalContext getExternalContext(){
 		return getFacesContext().getExternalContext();
 	}
 	
@@ -30,7 +30,7 @@ public class FacesContextUtils {
 	 * Obtém o FlashScope
 	 * @return
 	 */
-	protected  Flash getFlashScope(){
+	public  Flash getFlashScope(){
 		 return getExternalContext().getFlash();
 	}
 	/**
@@ -38,7 +38,7 @@ public class FacesContextUtils {
 	 * 
 	 * @return
 	 */
-	protected HttpServletRequest getRequest(){
+	public HttpServletRequest getRequest(){
 		return (HttpServletRequest) getExternalContext().getRequest();
 	}
 	
@@ -47,12 +47,24 @@ public class FacesContextUtils {
 	 * 
 	 * @return
 	 */
-	protected HttpServletResponse getResponse(){
+	public HttpServletResponse getResponse(){
 		return (HttpServletResponse)getExternalContext().getResponse();
 	}
 	
 	
 	public Object resolveExpression(String elExpression){
 		return null;
+	}
+	
+	/**
+	 * Retorna o caminho da aplicação, incluindo protocolo http.
+	 * 
+	 * @return Caminho da aplicação
+	 */
+	public String getApplicationPath() {
+		HttpServletRequest request = getRequest();
+		return request.getScheme() + "://" + request.getServerName()
+				+ (request.getServerPort() != 80? ":" + request.getServerPort() : "")
+				+ request.getContextPath();
 	}
 }

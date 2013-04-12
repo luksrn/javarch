@@ -278,16 +278,6 @@ public abstract class AbstractManagedBean<T> implements Serializable {
 		return MessageSourceAware.getMessage(code, args, getCurrentLocale() );
 	}
 	
-	/**
-	 * Retorna o caminho da aplicação, incluindo protocolo http.
-	 * 
-	 * @return Caminho da aplicação
-	 */
-	public String getApplicationPath() {
-		HttpServletRequest request = getRequest();
-		return request.getScheme() + "://" + request.getServerName()
-				+ (request.getServerPort() != 80? ":" + request.getServerPort() : "")
-				+ request.getContextPath();
-	}
+
 
 }

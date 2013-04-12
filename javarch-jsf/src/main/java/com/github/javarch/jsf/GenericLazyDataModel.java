@@ -40,8 +40,7 @@ public class GenericLazyDataModel<T extends Persistable<?>> extends LazyDataMode
 
 	private List<T> list;
 
-	private Repository<T> repository;
-	
+	private Repository<T> repository;	
 
 	private static final Logger LOG = LoggerFactory.getLogger(GenericLazyDataModel.class);
 
@@ -61,7 +60,7 @@ public class GenericLazyDataModel<T extends Persistable<?>> extends LazyDataMode
 	    	
 	    	list = repository.findAll(pageRequest);
 	    	
-	    	LOG.debug("{} returns {}", pageRequest,list );
+	    	LOG.debug("{} returns {}", pageRequest, list );
 	    	
 		    // set the total of itens
 	        if(getRowCount() <= 0){
