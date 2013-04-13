@@ -26,12 +26,12 @@ public class MessageContext {
 	 * @param msg Mensagem que será adicionada ao FacesContext
 	 */
 	public void addInfo(String msg, Object ... params) {
-		add(msg, FacesMessage.SEVERITY_INFO , params);
+		add(null,msg, FacesMessage.SEVERITY_INFO , params);
 	}
 
 
 	public void addInfo(String idComponent, String msg, Object ...params ){
-		
+		add(idComponent,msg, FacesMessage.SEVERITY_INFO , params);
 	}
 
 	/**
@@ -41,16 +41,17 @@ public class MessageContext {
 	 * @param msg Mensagem que será adicionada ao FacesContext
 	 */
 	public void addError(String msg, Object ... params) {
-		add(msg,  FacesMessage.SEVERITY_ERROR, params);
+		add(null, msg,  FacesMessage.SEVERITY_ERROR, params);
 	}
 	
 	public void addError(String idComponent, String msg, Object ...params ){
-		
+		add(idComponent, msg,  FacesMessage.SEVERITY_ERROR, params);
 	}
-	private void add(String msg, Severity tipo, Object ... params) {		
+	
+	private void add(String componentId, String msg, Severity tipo, Object ... params) {		
 		if (  msg != null && !msg.isEmpty() ){
 			String mensagemFormatada = MessageFormat.format(msg, params);		
-			facesContext.addMessage( null, new FacesMessage(FacesMessage.SEVERITY_ERROR, mensagemFormatada, "") );
+			facesContext.addMessage( componentId , new FacesMessage( tipo , mensagemFormatada, "") );
 		}
 	}
 	
