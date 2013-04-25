@@ -2,7 +2,6 @@ package com.github.javarch.support;
 
 public class BooleanHelper {
 
-
 	public static final String[] TRUE_VALUES = { "1", "t", "true", "y", "yes", "on", "checked" };
 	public static final String[] FALSE_VALUES = { "0", "f", "false", "n", "no", "off", "unchecked" };
 
@@ -13,32 +12,24 @@ public class BooleanHelper {
 	public static boolean toBoolean(String value, boolean defaultValue) {
 
 		if (value == null) {
-
 			return defaultValue;
-		}
-		else {
+		} else {
 
 			if (isTrueToken(value)) {
 				return true;
-			}
-			else if (isFalseToken(value)) {
+			} else if (isFalseToken(value)) {
 				return false;
-			}
-			else {
+			} else {
 				return defaultValue;
 			}
-
 		}
-
 	}
 
 	public static boolean isBooleanToken(String value) {
-
 		return isTrueToken(value) || isFalseToken(value);
 	}
 
 	public static boolean isFalseToken(String value) {
-
 		boolean flag = false;
 
 		if (value != null) {

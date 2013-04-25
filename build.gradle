@@ -65,8 +65,7 @@ subprojects {
 	
 	repositories {
 		mavenCentral()
-	}
-    version = '0.1-SNAPSHOT'
+	} 
 	
 	manifest.mainAttributes(
 		provider: 'gradle',
@@ -100,7 +99,7 @@ subprojects {
 				*/
 				pom.project {
 					name 'JavArch'
-					description 'Simple JavaEE application reference architecture'
+					description 'JavaEE application reference architecture'
 					url 'http://github.com/luksrn'
 					organization {
 						name 'http://github.com/luksrn'
@@ -168,13 +167,14 @@ project('javarch-jsf') {
 				"org.springframework:spring-web:${project.springFrameworkVersion}",
                 "org.primefaces:primefaces:3.4.2",
                 "commons-fileupload:commons-fileupload:1.2.2",
-                               "commons-io:commons-io:2.4",
-                               "com.sun.faces:jsf-api:2.1.14",
-                               "com.sun.faces:jsf-impl:2.1.14",
-                               "javax.servlet:servlet-api:2.5"   							
+                "commons-io:commons-io:2.4",
+                "com.sun.faces:jsf-api:2.1.20",
+                "com.sun.faces:jsf-impl:2.1.20",
+                "javax.servlet:servlet-api:2.5"
+		 
 	}
 	
-	version = '0.1-SNAPSHOT'
+	version = '0.2-SNAPSHOT'
 }
 
 
@@ -211,6 +211,6 @@ project('javarch-support') {
 		compile 'org.apache.commons:commons-lang3:3.0'            
 	}
 	
-	version = '0.1-SNAPSHOT'
+	version = '0.2-SNAPSHOT'
 }
  
