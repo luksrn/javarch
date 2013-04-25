@@ -29,7 +29,7 @@ public class MessageContextTest {
 	 	FacesContext facesContext = mock(FacesContext.class);	
 		when(facesContext.getMessageList()).thenReturn( new ArrayList<FacesMessage>() );
 		
-		messageContext.setFacesContext(facesContext);
+	//	messageContext.setFacesContext(facesContext);
 	}
 
 	@Test

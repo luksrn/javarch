@@ -23,13 +23,14 @@ import javax.faces.model.ListDataModel;
 import org.primefaces.model.LazyDataModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 
+import com.github.javarch.jsf.context.MessageContext;
 import com.github.javarch.persistence.Persistable;
 import com.github.javarch.persistence.Repository;
-import com.github.javarch.persistence.exception.DataBaseException;
 import com.github.javarch.persistence.orm.hibernate.BeanValidator;
 import com.github.javarch.support.SpringApplicationContext;
 
@@ -43,7 +44,7 @@ import com.github.javarch.support.SpringApplicationContext;
  *
  * @param <T>
  * 
- */
+ */ 
 public abstract class AbstractCrudManagedBean<T extends Persistable<?>> extends AbstractManagedBean<T> {
 	
 	/**
@@ -107,8 +108,9 @@ public abstract class AbstractCrudManagedBean<T extends Persistable<?>> extends 
 	 * 
 	 */
 	private transient Repository<T> repository;
-	
-	
+		
+	@Autowired
+	private MessageContext messageContext;
 	
 	public AbstractCrudManagedBean() {		
 		super();			
@@ -130,7 +132,7 @@ public abstract class AbstractCrudManagedBean<T extends Persistable<?>> extends 
 				
 		for (FieldError fieldError : erros.getFieldErrors()) {
 			LOG.debug("Campo {} apresenta o seguinte erro de validação: {}.", fieldError.getField(), fieldError.getDefaultMessage());			
-			addMessageError( fieldError.getDefaultMessage() );				             				
+			messageContext.addError( fieldError.getDefaultMessage() );				             				
 		}
 				
 	}
@@ -138,6 +140,7 @@ public abstract class AbstractCrudManagedBean<T extends Persistable<?>> extends 
 	public void cadastrar(ActionEvent event){
 		cadastrar();
 	}
+	
 	
 	
 	public String cadastrar(){
@@ -164,13 +167,13 @@ public abstract class AbstractCrudManagedBean<T extends Persistable<?>> extends 
 			} else {
 				LOG.debug("Tentando persistir entidade {} ", entidade );
 				
-				getRepository().save(entidade);
+				onCadastrar( entidade );
 
 				LOG.debug("Entidade {} persistida com sucesso!", entidade );
 
 				depoisDeCadastrar();
 
-				addMessageSuccess( getMessage("abstractcrudmanagedbean.save.success." + getEntityName() ));
+				messageContext.addInfo( getMessage("abstractcrudmanagedbean.save.success." + getEntityName() ));
 				
 				LOG.debug("RedirectAfterCreate = {}", urlRedirectDepoisDeCadastrar);
 
@@ -180,12 +183,15 @@ public abstract class AbstractCrudManagedBean<T extends Persistable<?>> extends 
 		}catch (Exception e) {									
 			LOG.error("Ocorreu um erro ao tentar salvar entidade " + entidade + ". Detalhes do erro são:" , e);
 			
-			addMessageError( getMessage("abstractcrudmanagedbean.save.exception", e.getMessage() ) );
+			messageContext.addError( getMessage("abstractcrudmanagedbean.save.exception", e.getMessage() ) );
 			
 			return urlRedirectOnErrorCadastrar;
 		}
 	}
 
+	protected void onCadastrar(T entidade){
+		getRepository().save(entidade);
+	}
 	/**
 	 * 
 	 * Método que executa alguma lógica de negócio da aplicação após o cadastro da entidade
@@ -267,14 +273,14 @@ public abstract class AbstractCrudManagedBean<T extends Persistable<?>> extends 
 
 				depoisDeAtualizar();
 
-				addMessageSuccess( getMessage("abstractcrudmanagedbean.update.success." + getEntityName() ));
+				messageContext.addInfo( getMessage("abstractcrudmanagedbean.update.success." + getEntityName() ));
 				
 				return urlRedirectDepoisDeAtualizar;
 			}
 
 		}catch (Exception e) {			
 			e.printStackTrace();
-			addMessageError( getMessage("abstractcrudmanagedbean.update.exception" + getEntityName() , e.getMessage() ) );
+			messageContext.addError( getMessage("abstractcrudmanagedbean.update.exception" + getEntityName() , e.getMessage() ) );
 			return urlRedirectOnErrorAtualizar;
 		}
 	}
@@ -338,14 +344,14 @@ public abstract class AbstractCrudManagedBean<T extends Persistable<?>> extends 
 			LOG.debug("Entidade removida com sucesso.");
 		
 				
-			addMessageSuccess( getMessage("abstractcrudmanagedbean.remove.success." + getEntityName() ));
+			messageContext.addInfo( getMessage("abstractcrudmanagedbean.remove.success." + getEntityName() ));
 				
 			depoisDeRemover();
 
 			return urlRedirectDepoisDeRemover;
 		}catch (Exception e) {			
 			e.printStackTrace();
-			addMessageError( getMessage("abstractcrudmanagedbean.remove.exception." + getEntityName(), e.getMessage() ) );
+			messageContext.addError( getMessage("abstractcrudmanagedbean.remove.exception." + getEntityName(), e.getMessage() ) );
 			return redirectOnErroAtualizar();
 		}
 	}

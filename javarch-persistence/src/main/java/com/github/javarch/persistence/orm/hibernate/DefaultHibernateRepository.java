@@ -59,7 +59,7 @@ import static com.google.common.base.Preconditions.*;
  */
 @SuppressWarnings("all")
 @Component("defaultRepository")
-@Transactional(propagation=Propagation.SUPPORTS)
+@Transactional(propagation=Propagation.REQUIRED)
 @Scope(value=BeanDefinition.SCOPE_PROTOTYPE)
 public class DefaultHibernateRepository<T extends AbstractPersistable> implements HibernateRepository<T>{
 	 
@@ -144,9 +144,7 @@ public class DefaultHibernateRepository<T extends AbstractPersistable> implement
 
 	protected Criteria createCriteria() {
 		return getCurrentSession().createCriteria(getClazz());
-	}
-	
-
+	}	
 	
 	public T findOneByNamedQuery(String namedQuery) {
 		return findOneByNamedQuery(namedQuery, null);

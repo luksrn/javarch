@@ -5,7 +5,11 @@ import java.util.List;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.application.FacesMessage.Severity;
-import javax.faces.context.FacesContext;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 
 import com.github.javarch.support.Assert;
 
@@ -14,9 +18,11 @@ import com.github.javarch.support.Assert;
  * @author luksrn
  *
  */
+@Component
 public class MessageContext {
 	
-	public FacesContext facesContext;
+	@Autowired
+	public FacesContextUtils facesContext;
 	
 
 	/**
@@ -44,6 +50,14 @@ public class MessageContext {
 		add(null, msg,  FacesMessage.SEVERITY_ERROR, params);
 	}
 	
+	public void addError(BindingResult erros){
+		Assert.notNull(erros, "BindingResult não pode ser nulo.");
+						
+		for (FieldError fieldError : erros.getFieldErrors()) {						
+			addError( fieldError.getDefaultMessage() );				             				
+		}			
+	}
+	
 	public void addError(String idComponent, String msg, Object ...params ){
 		add(idComponent, msg,  FacesMessage.SEVERITY_ERROR, params);
 	}
@@ -51,20 +65,20 @@ public class MessageContext {
 	private void add(String componentId, String msg, Severity tipo, Object ... params) {		
 		if (  msg != null && !msg.isEmpty() ){
 			String mensagemFormatada = MessageFormat.format(msg, params);		
-			facesContext.addMessage( componentId , new FacesMessage( tipo , mensagemFormatada, "") );
+			facesContext.getFacesContext().addMessage( componentId , new FacesMessage( tipo , mensagemFormatada, "") );
 		}
 	}
 	
 	public List<FacesMessage> getMessages() {
-		return facesContext.getMessageList();
+		return facesContext.getFacesContext().getMessageList();
 	}
  
 
 	public void clear() {
-		facesContext.getMessageList().clear();		
+		facesContext.getFacesContext().getMessageList().clear();		
 	}
 
-	public void setFacesContext(FacesContext facesContext) {
+	public void setFacesContext(FacesContextUtils facesContext) {
 		Assert.notNull(facesContext, "FacesContext can not be null.");
 		this.facesContext = facesContext;
 	}

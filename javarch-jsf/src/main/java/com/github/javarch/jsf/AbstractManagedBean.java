@@ -20,12 +20,7 @@ package com.github.javarch.jsf;
 import java.io.Serializable;
 import java.util.Locale;
 
-import javax.faces.application.FacesMessage;
-import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import javax.faces.context.Flash;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -119,7 +114,7 @@ public abstract class AbstractManagedBean<T> implements Serializable {
 		 * objeto que seja necessário repassar para outro MBean (levando em consideração
 		 * mbeans para casos de uso)
 		 */
-		Object possivelClasse = getFlashScope().get(FLASH_CLASSE_DOMAIN);
+		Object possivelClasse = FacesContext.getCurrentInstance().getExternalContext().getFlash().get(FLASH_CLASSE_DOMAIN);
 		/**
 		 *   Se ele for um objeto do tipo T que o mbean está gerenciado, reutiliza.
 		 */		
@@ -153,69 +148,7 @@ public abstract class AbstractManagedBean<T> implements Serializable {
 		return getEntidade().getClass().getSimpleName().toLowerCase();
 	}
 	
-	/**
-	 * Obtém o FacesContext.
-	 * 
-	 * @return
-	 */
-	protected FacesContext getFacesContext(){
-		return FacesContext.getCurrentInstance();
-	}
-	
-	/**
-	 * Obtém o ExternalContext
-	 * @return
-	 */
-	protected ExternalContext getExternalContext(){
-		return getFacesContext().getExternalContext();
-	}
-	
-	/**
-	 * Obtém o FlashScope
-	 * @return
-	 */
-	protected  Flash getFlashScope(){
-		 return getExternalContext().getFlash();
-	}
-	/**
-	 * Obtém um objeto HttpServletRequest associado a requisição atual.
-	 * 
-	 * @return
-	 */
-	protected HttpServletRequest getRequest(){
-		return (HttpServletRequest) getExternalContext().getRequest();
-	}
-	
-	/**
-	 * Obtém um objeto HttpServletResponse associado a resposta atual.
-	 * 
-	 * @return
-	 */
-	protected HttpServletResponse getResponse(){
-		return (HttpServletResponse)getExternalContext().getResponse();
-	}
-	
-	/**
-	 * Adiciona a mensagem da variável <i>msg</i> ao FacesContext. A mensagem adicionada terá
-	 * o severity do tipo FacesMessage.SEVERITY_ERROR e não será associada à nenhum componente.
-	 * 
-	 * @param msg Mensagem que será adicionada ao FacesContext
-	 */
-	protected void addMessageError(String msg){		
-		getFacesContext().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, msg, ""));
-	}
-	
-
-	/**
-	 * Adiciona a mensagem da variável <i>msg</i> ao FacesContext. A mensagem adicionada terá
-	 * o severity do tipo FacesMessage.SEVERITY_INFO e não será associada à nenhum componente.
-	 * 
-	 * @param msg Mensagem que será adicionada ao FacesContext
-	 */
-	protected void addMessageSuccess(String summary){		
-		getFacesContext().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, summary, ""));
-	}	
-	
+ 
 	/**
 	 * Obtém uma referência à entidade gerenciada pelo managed bean.
 	 * 
@@ -257,7 +190,7 @@ public abstract class AbstractManagedBean<T> implements Serializable {
 	 * @return Locale
 	 */
 	public Locale getCurrentLocale(){
-		return getFacesContext().getViewRoot().getLocale();
+		return FacesContext.getCurrentInstance().getViewRoot().getLocale();
 	}
 	
 	/**
