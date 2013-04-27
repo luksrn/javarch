@@ -45,6 +45,7 @@ import com.github.javarch.support.SpringApplicationContext;
  * @param <T>
  * 
  */ 
+@Deprecated
 public abstract class AbstractCrudManagedBean<T extends Persistable<?>> extends AbstractManagedBean<T> {
 	
 	/**
