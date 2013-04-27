@@ -136,79 +136,7 @@ public abstract class AbstractCrudManagedBean<T extends Persistable<?>> extends 
 		}
 				
 	}
-	
-	public void cadastrar(ActionEvent event){
-		cadastrar();
-	}
-	
-	
-	
-	public String cadastrar(){
-		try{
-			
-			LOG.debug("Iniciando processo de cadastro da entidade {}.", getEntityName());
-			
-			/**
-			 * Realiza alguma possível ação antes de cadastrar.
-			 */
-			antesDeCadastrar();
-			
-			/**
-			 * Realiza validações em anotações hibernate validator.
-			 * 
-			 */			
-			BindingResult result = BeanValidator.validate( entidade );
-			
-			if ( result.hasErrors() ){
-				LOG.debug("Ocorreram {} erros de validação JSR 303 - Bean Validation.", result.hasErrors());
-				
-				geraFacesMessagesErros( result );
-				return null;
-			} else {
-				LOG.debug("Tentando persistir entidade {} ", entidade );
-				
-				onCadastrar( entidade );
-
-				LOG.debug("Entidade {} persistida com sucesso!", entidade );
-
-				depoisDeCadastrar();
-
-				messageContext.addInfo( getMessage("abstractcrudmanagedbean.save.success." + getEntityName() ));
-				
-				LOG.debug("RedirectAfterCreate = {}", urlRedirectDepoisDeCadastrar);
-
-				return urlRedirectDepoisDeCadastrar;
-			}
-		
-		}catch (Exception e) {									
-			LOG.error("Ocorreu um erro ao tentar salvar entidade " + entidade + ". Detalhes do erro são:" , e);
-			
-			messageContext.addError( getMessage("abstractcrudmanagedbean.save.exception", e.getMessage() ) );
-			
-			return urlRedirectOnErrorCadastrar;
-		}
-	}
-
-	protected void onCadastrar(T entidade){
-		getRepository().save(entidade);
-	}
-	/**
-	 * 
-	 * Método que executa alguma lógica de negócio da aplicação após o cadastro da entidade
-	 * gerenciada.  
-	 */
-	protected void depoisDeCadastrar() {
-		
-	}
-
-
-	/**
-	 * Método que executa alguma lógica de negócio da aplicação antes da cadastrar da da entidade
-	 * gerenciada.  
-	 */
-	protected void antesDeCadastrar() {
-
-	}
+	  
 	
 	/**
 	 * 
@@ -216,7 +144,7 @@ public abstract class AbstractCrudManagedBean<T extends Persistable<?>> extends 
 	 */
 	public DataModel<T> getFindAllAsDataModel(){
 		DataModel<T> dataModel = new ListDataModel<T>();
-		dataModel.setWrappedData( getRepository().findAll() );
+		dataModel.setWrappedData( getRepository().findAll( getGenericType() ) );
 		return dataModel;
 	}
 	
@@ -226,7 +154,7 @@ public abstract class AbstractCrudManagedBean<T extends Persistable<?>> extends 
 	 */
 	public LazyDataModel<T> getFindAllAsLazyDataModel(){		
 		if (lazyDataModel == null){
-			lazyDataModel = new GenericLazyDataModel<T>(getRepository());
+			lazyDataModel = new GenericLazyDataModel<T>(getRepository(),getGenericType());
 		}
 		return lazyDataModel;
 	}
@@ -269,7 +197,7 @@ public abstract class AbstractCrudManagedBean<T extends Persistable<?>> extends 
 				return null;
 			} else {
 			
-				getRepository().save(entidade);
+				getRepository().saveOrUpdate(entidade);
 
 				depoisDeAtualizar();
 
@@ -383,7 +311,7 @@ public abstract class AbstractCrudManagedBean<T extends Persistable<?>> extends 
 	public String loadAfterSetViewParamId(){
 		
 		if ( ! entidade.isNew() ){			
-			setEntidade( (T)getRepository().findOne(entidade.getId()));
+			setEntidade( (T)getRepository().findOne(getGenericType(), entidade.getId()));
 		}
 	 	
 	 	return "";
@@ -413,8 +341,7 @@ public abstract class AbstractCrudManagedBean<T extends Persistable<?>> extends 
 	@SuppressWarnings("unchecked")
 	protected Repository<T> getRepository(){
 		if ( repository == null){
-			repository = SpringApplicationContext.getBean("defaultRepository", Repository.class);
-			repository.setClazz( getGenericType() );
+			repository = SpringApplicationContext.getBean("defaultRepository", Repository.class);		 
 		}
 		
 		return repository;

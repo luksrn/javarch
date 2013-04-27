@@ -14,7 +14,7 @@
 * the License.
 */
 
-package com.github.javarch.jsf;
+package com.github.javarch.jsf.config;
 
 import java.util.Map;
 

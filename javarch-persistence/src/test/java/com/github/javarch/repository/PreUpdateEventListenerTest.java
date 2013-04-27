@@ -50,18 +50,16 @@ public class PreUpdateEventListenerTest {
 	
 	@Test
 	public void testUpdate(){
-		defaultRepository.setClazz(User.class);
-		
-		User usuario = new User("Lucas Farias de Oliveira", "123456","luksrn@gmail.com");
+	 	User usuario = new User("Lucas Farias de Oliveira", "123456","luksrn@gmail.com");
 
-		defaultRepository.save(usuario);
+		defaultRepository.saveOrUpdate(usuario);
  	 
 		sf.getCurrentSession().flush();
 		
 		assertNull( "Após o insert, lastupdate não foi null + "     + usuario.getLastUpdated() , usuario.getLastUpdated());		
 		
 		usuario.setEmail("email_alterado@gmail.com");
-		defaultRepository.save(usuario);
+		defaultRepository.saveOrUpdate(usuario);
 		
 		sf.getCurrentSession().flush();
 		 

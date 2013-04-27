@@ -28,21 +28,14 @@ import java.util.List;
  * @param <T>
  */
 public interface Repository <T extends Persistable<?>>{
-		
-	/**
-	 * Atribui qual classe sera gerenciada pelo Repository.
-	 * 
-	 * @param clazz
-	 */
-	void setClazz(Class<T> clazz);
-	
+			
 	/**
 	 * Persiste uma entidade anotada com @Entity no banco de dados.
 	 * 
 	 * @param entity - Objeto que devera ser persistido no banco de dados.
 	 * @return Uma referencia ao proprio objeto persistido. 
 	 */
-	T  save(T entity);
+	T  saveOrUpdate(T entity);
 	
 	/**
 	 * Busca um objeto pelo ID.
@@ -51,7 +44,7 @@ public interface Repository <T extends Persistable<?>>{
 	 * @param id
 	 * @return
 	 */
-	T  findOne(Serializable id);
+	T  findOne(Class<T> clazz,Serializable id);
 	
 
 	/**
@@ -75,7 +68,7 @@ public interface Repository <T extends Persistable<?>>{
 	 * @param id
 	 * @return
 	 */
-	T getReference(Serializable id);
+	T getReference(Class<T> clazz,Serializable id);
 	
 	/**
 	 * Dado uma entidade definida pelo metodo {@link #setClazz(Class)}, busca todos os registros 
@@ -89,7 +82,7 @@ public interface Repository <T extends Persistable<?>>{
 	 * 
 	 * @return Uma lista com todos os registros do banco de dados.
 	 */
-	List<T> findAll();	
+	List<T> findAll(Class<T> clazz);	
 	
 	
 	/**
@@ -101,7 +94,7 @@ public interface Repository <T extends Persistable<?>>{
 	 * @see #findOne(Serializable)
 	 * @return Uma lista com todos os registros no intervalo da paginação.
 	 */
-	List<T> findAll(PageRequest page);	
+	List<T> findAll(Class<T> clazz,PageRequest page);	
 	
 	/**
 	 * Remove um registro do banco de dados pelo seu ID.
@@ -127,6 +120,6 @@ public interface Repository <T extends Persistable<?>>{
 	 * @see #setClazz(Class)
 	 * @return
 	 */
-	Long count();
+	Long count(Class<T> clazz);
 	
 }

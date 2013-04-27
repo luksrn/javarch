@@ -46,11 +46,10 @@ public class PreInsertEventListenerTest {
 	
 	@Test
 	public void testInsert(){
-		defaultRepository.setClazz(User.class);
-		
+		 	
 		User usuario = new User("Lucas Farias de Oliveira", "123456","luksrn@gmail.com");
 
-		defaultRepository.save(usuario);
+		defaultRepository.saveOrUpdate(usuario);
 		assertNotNull(usuario);
 		assertNotNull( usuario.getDateCreated() );
 		assertNull(usuario.getLastUpdated());

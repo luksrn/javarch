@@ -33,7 +33,7 @@ public final class ParameterizedTypes {
 	 * @return
 	 */
 	@SuppressWarnings("all")
-	public static Class getRawType(Class clazz){		
+	public static <T> Class<T> getRawType(Class clazz){				
 		ParameterizedType superclass = (ParameterizedType) clazz.getGenericSuperclass();
 		return  (Class) superclass.getActualTypeArguments()[0];
 		

@@ -35,9 +35,9 @@ import com.github.javarch.persistence.Repository;
  */
 public interface HibernateRepository<T extends Persistable<?>> extends Repository<T>{
 
-	List<T> findAll(Order ... order) ;    
+	List<T> findAll(Class<T> clazz,Order ... order) ;    
 
-	List<T> findAll(Projection projecoes, Order ... order) ;
+	List<T> findAll(Class<T> clazz,Projection projecoes, Order ... order) ;
 	
 	/**
 	 * Busca um unico registro atraves de uma namedQuery definida no objeto de dominio.

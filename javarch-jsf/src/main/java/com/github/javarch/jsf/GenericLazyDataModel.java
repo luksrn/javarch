@@ -42,12 +42,15 @@ public class GenericLazyDataModel<T extends Persistable<?>> extends LazyDataMode
 
 	private Repository<T> repository;	
 
+	private Class<T> clazz;
+	
 	private static final Logger LOG = LoggerFactory.getLogger(GenericLazyDataModel.class);
 
 	
-	public GenericLazyDataModel(Repository<T> repository) {
+	public GenericLazyDataModel(Repository<T> repository, Class<T> clazz) {
 		super();
 		this.repository = repository;
+		this.clazz = clazz;
 	}
 
 	@Override
@@ -58,13 +61,13 @@ public class GenericLazyDataModel<T extends Persistable<?>> extends LazyDataMode
 	    	
 	    	LOG.debug("{}", pageRequest );
 	    	
-	    	list = repository.findAll(pageRequest);
+	    	list = repository.findAll(clazz, pageRequest);
 	    	
 	    	LOG.debug("{} returns {}", pageRequest, list );
 	    	
 		    // set the total of itens
 	        if(getRowCount() <= 0){
-	            setRowCount(repository.count().intValue());
+	            setRowCount(repository.count(clazz).intValue());
 	        }
 	 	    
 	    }catch (Exception e) {

@@ -28,6 +28,7 @@ import org.springframework.util.ClassUtils;
 
 import com.github.javarch.support.MessageSourceAware;
 import com.github.javarch.support.ParameterizedTypes;
+import com.google.common.base.Optional;
 
 /**
  * Classe abstrata que implementa o padrão Layer Supertype e tem como objetivo definir

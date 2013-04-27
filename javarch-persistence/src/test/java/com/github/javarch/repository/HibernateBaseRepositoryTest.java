@@ -101,10 +101,9 @@ public class HibernateBaseRepositoryTest  {
 	} 			
 	
 	@Test
-	public void testLoad(){
-		defaultRepository.setClazz(User.class);
+	public void testLoad(){ 
 	 
-		List<User> users = defaultRepository.findAll(); 
+		List<User> users = defaultRepository.findAll(User.class); 
 		assertNotNull(users);
 		assertTrue("Esperava 50 mas encontrou " + users.size(), users.size() == 50  );
 	} 
@@ -112,7 +111,7 @@ public class HibernateBaseRepositoryTest  {
 
 	@Test
 	public void testLoadNamedQuerySemParametros(){
-		defaultRepository.setClazz(User.class);
+ 
 	 
 		List<User> users = defaultRepository.findAllByNamedQuery("User.findAll", null);
 		assertNotNull(users);
@@ -122,7 +121,7 @@ public class HibernateBaseRepositoryTest  {
 
 	@Test
 	public void testLoadNamedQueryComParametros(){
-		defaultRepository.setClazz(User.class);
+ 
 		
 		
 		NamedQueryParameter params = NamedQueryParameter.with("email", "user43@gmail.com");
@@ -133,9 +132,8 @@ public class HibernateBaseRepositoryTest  {
 	
 	@Test
 	public void testLoadPaginado(){
-		defaultRepository.setClazz(User.class);
-	 
-		List<User> users = defaultRepository.findAll(new PageRequest(20, 10));
+	
+		List<User> users = defaultRepository.findAll(User.class, new PageRequest(20, 10));
 		assertNotNull(users);		
 		assertTrue(users.size() == 10 );
 		assertTrue(users.get(0).getEmail().equals("user20@gmail.com"));
@@ -145,12 +143,11 @@ public class HibernateBaseRepositoryTest  {
 	
 	@Test
 	public void testLoadProjecao(){
-		defaultRepository.setClazz(User.class);
-	 
+		 
 		 Projection p = Projections.projectionList()
 				 	.add( Projections.property("email"), "email" );
 
-		List<User> users = defaultRepository.findAll(p);
+		List<User> users = defaultRepository.findAll(User.class, p);
 		assertNotNull(users);
 		
 		for (User User : users) {
