@@ -6,7 +6,9 @@ import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.event.PhaseListener;
 
-import org.slf4j.Logger;
+import com.github.javarch.support.log.Logger;
+import com.github.javarch.support.log.LoggerFactory;
+ 
  
  
 /**
@@ -14,45 +16,37 @@ import org.slf4j.Logger;
  */
 public class DebugPhaseListener implements PhaseListener {
 
-	// serialVersionUID
 	private static final long serialVersionUID = 5431973221176870776L;
 
-	// Logger
-	private static final Logger logger = null;//LoggerFactory.getLogger(DebugPhaseListener.class);
-
-	public void afterPhase(PhaseEvent phaseEvent) {
-
-		if (logger.isDebugEnabled()) {
-			PhaseId phaseId = phaseEvent.getPhaseId();
-
-			String viewId = null;
-			UIViewRoot uiViewRoot = phaseEvent.getFacesContext().getViewRoot();
-
-			if (uiViewRoot != null) {
-				viewId = uiViewRoot.getViewId();
-			}
-
-			logger.debug("AFTER phaseId=[{0}] viewId=[{1}]", phaseId.toString(), viewId);
-		}
-	}
+	private static final Logger logger = LoggerFactory.getLogger(DebugPhaseListener.class);
 
 	public void beforePhase(PhaseEvent phaseEvent) {
+		debugPhase("BEFORE",phaseEvent);
+	}	
 
-		if (logger.isDebugEnabled()) {
-			PhaseId phaseId = phaseEvent.getPhaseId();
-
-			String viewId = null;
-			UIViewRoot uiViewRoot = phaseEvent.getFacesContext().getViewRoot();
-
-			if (uiViewRoot != null) {
-				viewId = uiViewRoot.getViewId();
-			}
-
-			logger.debug("BEFORE phaseId=[{0}] viewId=[{1}]", phaseId.toString(), viewId);
-		}
+	public void afterPhase(PhaseEvent phaseEvent) {
+		debugPhase("AFTER",phaseEvent);
 	}
 
 	public PhaseId getPhaseId() {
 		return PhaseId.ANY_PHASE;
+	}
+	
+
+	private void debugPhase(String phase, PhaseEvent phaseEvent) {
+
+		if (logger.isDebugEnabled()) {
+			PhaseId phaseId = phaseEvent.getPhaseId();
+
+			String viewId = null;
+			UIViewRoot uiViewRoot = phaseEvent.getFacesContext().getViewRoot();
+
+			if (uiViewRoot != null) {
+				viewId = uiViewRoot.getViewId();
+			}
+
+			logger.debug( phase + " phaseId=[{0}] viewId=[{1}]", phaseId.toString(), viewId);
+		}
+		
 	}
 }
