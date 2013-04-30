@@ -33,11 +33,11 @@ import com.github.javarch.persistence.Repository;
  *
  * @param <T>
  */
-public interface HibernateRepository<T extends Persistable<?>> extends Repository<T>{
+public interface HibernateRepository extends Repository {
 
-	List<T> findAll(Class<T> clazz,Order ... order) ;    
+	<T extends Persistable<?>> List<T> findAll(Class<T> clazz,Order ... order) ;    
 
-	List<T> findAll(Class<T> clazz,Projection projecoes, Order ... order) ;
+	<T extends Persistable<?>> List<T> findAll(Class<T> clazz,Projection projecoes, Order ... order) ;
 	
 	/**
 	 * Busca um unico registro atraves de uma namedQuery definida no objeto de dominio.
@@ -49,7 +49,7 @@ public interface HibernateRepository<T extends Persistable<?>> extends Repositor
 	 * 
 	 * @return Uma instancia do banco de dados caso a consulta retorne um resultado, null caso contrario.
 	 */
-	T findOneByNamedQuery(String namedQuery );
+	<T extends Persistable<?>> T findOneByNamedQuery(String namedQuery );
 
 	/**
 	 * Busca um unico registro atraves de uma namedQuery definida no objeto de dominio.
@@ -78,15 +78,15 @@ public interface HibernateRepository<T extends Persistable<?>> extends Repositor
 	 * 
 	 * @return Uma instancia do banco de dados caso a consulta retorne um resultado, null caso contrario.
 	 */
-	T findOneByNamedQuery(String namedQuery, NamedQueryParameter parameters);
+	<T extends Persistable<?>> T findOneByNamedQuery(String namedQuery, NamedQueryParameter parameters);
 
-	List<T> findAllByNamedQuery(String namedQuery) ;
+	<T extends Persistable<?>> List<T> findAllByNamedQuery(String namedQuery) ;
 	
-	List<T> findAllByNamedQuery(String namedQuery, NamedQueryParameter parameters) ;
+	<T extends Persistable<?>> List<T> findAllByNamedQuery(String namedQuery, NamedQueryParameter parameters) ;
 	
-	T findOneByExample(T objeto);
+	<T extends Persistable<?>> T findOneByExample(T objeto);
 	
-	List<T> findAllByExample(T objeto, Order... order);
+	<T extends Persistable<?>> List<T> findAllByExample(T objeto, Order... order);
 	
-	List<T> findAllByExample(T objeto, PageRequest page , Order... order);
+	<T extends Persistable<?>> List<T> findAllByExample(T objeto, PageRequest page , Order... order);
 }

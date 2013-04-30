@@ -42,7 +42,7 @@ import com.github.javarch.support.spring.Profiles;
 public class PreUpdateEventListenerTest {
 
 	@Autowired
-	private HibernateRepository<User> defaultRepository;	
+	private HibernateRepository defaultRepository;	
 	
 
 	@Autowired

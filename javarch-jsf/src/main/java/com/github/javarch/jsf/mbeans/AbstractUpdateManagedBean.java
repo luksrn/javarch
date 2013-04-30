@@ -1,19 +1,17 @@
-package com.github.javarch.jsf;
+package com.github.javarch.jsf.mbeans;
 
 import com.github.javarch.persistence.Persistable;
-import com.github.javarch.persistence.Repository;
 import com.github.javarch.support.log.Logger;
 import com.github.javarch.support.log.LoggerFactory;
 import com.google.common.base.Optional;
+import com.google.common.base.Preconditions;
 
 public abstract class AbstractUpdateManagedBean<T extends Persistable<?>> extends AbstractFormManagedBean<T>{
  
 	private static final long serialVersionUID = 7222941430765228865L;
 	
 	private static final Logger LOG = LoggerFactory.getLogger(AbstractUpdateManagedBean.class);
-	
-	private Repository<T> repository;
-
+	 
 	/**
 	 * Carrega o uma entidade "Entidade" baseada id. Utilizado inicialmente no <f:event> após 
 	 * capturar o id no f:viewParam
@@ -22,16 +20,15 @@ public abstract class AbstractUpdateManagedBean<T extends Persistable<?>> extend
 	@SuppressWarnings("all")
 	public String loadAfterSetViewParamId(){
 		
-		if ( ! entidade.isNew() ){
-			T entityLoaded = (T)repository.findOne( getGenericType(), entidade.getId() );
+		if ( ! entity.isNew() ){
+			T entityLoaded = (T)repository.findOne( getGenericType(), entity.getId() );
 			if ( !Optional.of(entityLoaded).isPresent() ) {
 				handleEntityNotFound();
 			}
 			if ( isValidUseEntity( entityLoaded ) ){
-				setEntidade( entityLoaded );
+				setEntity( entityLoaded );
 				return "";
 			}
-			throw new IllegalRequestAttributeException();
 		}
 	 	
 	 	return "";
@@ -42,11 +39,12 @@ public abstract class AbstractUpdateManagedBean<T extends Persistable<?>> extend
 	}
 
 	protected void handleEntityNotFound(){
-		LOG.error("Entity {} not found in databse.", entidade );
+		LOG.error("Entity {} not found in databse.", entity );
 	}
 
 	@Override
 	public void onAction(T entidade) {		
+		Preconditions.checkState( entidade.getId() != null );
 		repository.saveOrUpdate(entidade);
 	}
 }

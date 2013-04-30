@@ -1,4 +1,4 @@
-package com.github.javarch.jsf;
+package com.github.javarch.jsf.mbeans;
 
 import javax.inject.Named;
 

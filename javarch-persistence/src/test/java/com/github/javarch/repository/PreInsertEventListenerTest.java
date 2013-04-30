@@ -41,7 +41,7 @@ import com.github.javarch.support.spring.Profiles;
 public class PreInsertEventListenerTest {
 
 	@Autowired
-	private HibernateRepository<User> defaultRepository;	
+	private HibernateRepository defaultRepository;	
 	
 	
 	@Test

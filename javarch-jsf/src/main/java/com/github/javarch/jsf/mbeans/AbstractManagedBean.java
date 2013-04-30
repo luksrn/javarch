@@ -13,22 +13,17 @@
 * License for the specific language governing permissions and limitations under
 * the License.
 */
-
-
-package com.github.javarch.jsf;
+package com.github.javarch.jsf.mbeans;
 
 import java.io.Serializable;
-import java.util.Locale;
 
 import javax.faces.context.FacesContext;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+ 
 import org.springframework.util.ClassUtils;
 
-import com.github.javarch.support.MessageSourceAware;
 import com.github.javarch.support.ParameterizedTypes;
-import com.google.common.base.Optional;
+import com.github.javarch.support.log.Logger;
+import com.github.javarch.support.log.LoggerFactory;
 
 /**
  * Classe abstrata que implementa o padrão Layer Supertype e tem como objetivo definir
@@ -42,9 +37,9 @@ import com.google.common.base.Optional;
  */
 public abstract class AbstractManagedBean<T> implements Serializable {
 
-	public static final String FLASH_CLASSE_DOMAIN = "CLASSE_DOMINIO";
+	public static final String FLASH_DOMAIN_CLASS = "com.github.javarch.jsf.mbeans.abstractmanagedbean.domain.class";
 	
-	private static final Logger LOG = LoggerFactory.getLogger(AbstractCrudManagedBean.class);
+	private static final Logger LOG = LoggerFactory.getLogger(AbstractManagedBean.class);
 	/**
 	 * Generated SerialVersionUID
 	 */
@@ -53,7 +48,7 @@ public abstract class AbstractManagedBean<T> implements Serializable {
 	/**
 	 * Entidade de dominio que será gerenciada pelo managed bean.
 	 */
-	protected T entidade;
+	protected T entity;
 	
 	/**
 	 * Tipo do objeto gerenciado pelo managed bean.
@@ -72,12 +67,10 @@ public abstract class AbstractManagedBean<T> implements Serializable {
 	 * objeto do tipo genérico que será gerenciado pelo MBean.
 	 */
 	public AbstractManagedBean() {
-		try{						
-			
-		    instanciateGenericType();	
-		    
+		try{									
+		    instanciateGenericType();			    
 		}catch (Exception e) {
-			throw new IllegalStateException("Entidade " + entidade.getClass().getName() + " não possui construtor padrão.");
+			throw new IllegalStateException("Entidade " + entity.getClass().getName() + " não possui construtor padrão.");
 		}
 	}
 	
@@ -86,11 +79,10 @@ public abstract class AbstractManagedBean<T> implements Serializable {
 	 * Obtém o tipo da class passado como parâmetro genérico.
 	 * 
 	 * @return Class do parâmetro genérico.
-	 */
-	@SuppressWarnings("unchecked")
-	protected Class<T> getGenericType(){
+	 */ 
+	protected final Class<T> getGenericType(){
 		if( clazz == null ){
-			clazz = ParameterizedTypes.getRawType(getClass());
+			clazz = ParameterizedTypes.getRawType( getClass() );
 		}
 		return clazz;  
 	}
@@ -108,23 +100,23 @@ public abstract class AbstractManagedBean<T> implements Serializable {
 	 * @throws IllegalAccessException
 	 */
 	@SuppressWarnings("unchecked")
-	protected void instanciateGenericType() throws InstantiationException,
+	private void instanciateGenericType() throws InstantiationException,
 			IllegalAccessException {
 		/**
 		 * Obtém um parâmetro do flash scope FLASH_CLASSE_DOMAIN que pode conter um
 		 * objeto que seja necessário repassar para outro MBean (levando em consideração
 		 * mbeans para casos de uso)
 		 */
-		Object possivelClasse = FacesContext.getCurrentInstance().getExternalContext().getFlash().get(FLASH_CLASSE_DOMAIN);
+		Object possivelClasse = FacesContext.getCurrentInstance().getExternalContext().getFlash().get(FLASH_DOMAIN_CLASS);
 		/**
 		 *   Se ele for um objeto do tipo T que o mbean está gerenciado, reutiliza.
 		 */		
 		if ( possivelClasse != null && ClassUtils.isAssignable( getGenericType(), possivelClasse.getClass() ) ){
-			setEntidade((T) possivelClasse );		
+			setEntity( (T) possivelClasse );		
 		}else{
 			clazz = getGenericType();
 			if( clazz != null){
-				entidade = clazz.newInstance();
+				entity = clazz.newInstance();
 			}else{
 				LOG.debug("Não foi possível definir tipo da entidade gerenciada. MBean.getEntidade() irá retornar null.");
 			}
@@ -136,7 +128,7 @@ public abstract class AbstractManagedBean<T> implements Serializable {
 	 * 
 	 * @return
 	 */
-	protected String getPathPersistableEntity() {
+	protected final String getPathPersistableEntity() {
 		return "/" + getEntityName();
 	}
 	
@@ -145,8 +137,8 @@ public abstract class AbstractManagedBean<T> implements Serializable {
 	 * 
 	 * @return 
 	 */
-	protected String getEntityName(){
-		return getEntidade().getClass().getSimpleName().toLowerCase();
+	protected final String getEntityName(){
+		return getEntity().getClass().getSimpleName().toLowerCase();
 	}
 	
  
@@ -155,23 +147,23 @@ public abstract class AbstractManagedBean<T> implements Serializable {
 	 * 
 	 * @return Objeto de dominio gerenciado pelo MBean.
 	 */
-	public T getEntidade() {
-		return entidade;
+	public final T getEntity() {
+		return entity;
 	}
 
 	/**
 	 * Seta entidade gerenciada pelo MBean.
 	 * @param entidade
 	 */
-	public void setEntidade(T entidade) {
-		this.entidade = entidade;
+	public final void setEntity(T entidade) {
+		this.entity = entidade;
 	}
 
 	/**
 	 * Informa se as informações da view serão apenas leitura.
 	 * @return
 	 */
-	public boolean isReadyOnly() {
+	public final boolean isReadyOnly() {
 		return isReadyOnly;
 	}
 
@@ -181,37 +173,8 @@ public abstract class AbstractManagedBean<T> implements Serializable {
 	 * 
 	 * @param isReadyOnly
 	 */
-	public void setReadyOnly(boolean isReadyOnly) {
+	public final void setReadyOnly(boolean isReadyOnly) {
 		this.isReadyOnly = isReadyOnly;
 	}
-	
-	/**
-	 * Obtém o  Locale associado ao usuário.
-	 * 
-	 * @return Locale
-	 */
-	public Locale getCurrentLocale(){
-		return FacesContext.getCurrentInstance().getViewRoot().getLocale();
-	}
-	
-	/**
-	 * Obtém uma mensagem dos arquivos de i18n definidos na arquitetura através 
-	 * da classe MessageSourceAware utilizado o Locale do usuário. 
-	 * 
-	 * 
-	 * @param code - Código que representa a chave do arquivo properties.
-	 * @param args - Possíveis argumentos que a mensagem requisitada utilize.
-	 * 
-	 * @return Em caso de sucesso a mensagem recuperada dos arquivos properties. Caso
-	 * ocorra um erro a mensagem será ???code??? 
-	 * 
-	 * @see MessageSourceAware
-	 * 
-	 */
-	public String getMessage(String code, String ... args ){
-		return MessageSourceAware.getMessage(code, args, getCurrentLocale() );
-	}
-	
-
-
+ 
 }

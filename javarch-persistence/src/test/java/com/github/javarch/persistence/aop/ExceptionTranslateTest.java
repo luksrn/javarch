@@ -33,7 +33,7 @@ import com.github.javarch.persistence.orm.hibernate.conf.HibernatePropertiesConf
 public class ExceptionTranslateTest {
 	
 	@Autowired
-	private HibernateRepository<User> defaultRepository;	
+	private HibernateRepository defaultRepository;	
 
 	@Test(expected=DataBaseException.class)
 	public void testNullInsert(){

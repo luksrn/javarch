@@ -27,7 +27,7 @@ import java.util.List;
  * @since 0.1
  * @param <T>
  */
-public interface Repository <T extends Persistable<?>>{
+public interface Repository {
 			
 	/**
 	 * Persiste uma entidade anotada com @Entity no banco de dados.
@@ -35,7 +35,7 @@ public interface Repository <T extends Persistable<?>>{
 	 * @param entity - Objeto que devera ser persistido no banco de dados.
 	 * @return Uma referencia ao proprio objeto persistido. 
 	 */
-	T  saveOrUpdate(T entity);
+	<T extends Persistable<?>> T  saveOrUpdate(T entity);
 	
 	/**
 	 * Busca um objeto pelo ID.
@@ -44,7 +44,7 @@ public interface Repository <T extends Persistable<?>>{
 	 * @param id
 	 * @return
 	 */
-	T  findOne(Class<T> clazz,Serializable id);
+	<T extends Persistable<?>> T  findOne(Class<T> clazz,Serializable id);
 	
 
 	/**
@@ -68,7 +68,7 @@ public interface Repository <T extends Persistable<?>>{
 	 * @param id
 	 * @return
 	 */
-	T getReference(Class<T> clazz,Serializable id);
+	<T extends Persistable<?>> T getReference(Class<T> clazz,Serializable id);
 	
 	/**
 	 * Dado uma entidade definida pelo metodo {@link #setClazz(Class)}, busca todos os registros 
@@ -82,7 +82,7 @@ public interface Repository <T extends Persistable<?>>{
 	 * 
 	 * @return Uma lista com todos os registros do banco de dados.
 	 */
-	List<T> findAll(Class<T> clazz);	
+	<T extends Persistable<?>> List<T> findAll(Class<T> clazz);	
 	
 	
 	/**
@@ -94,7 +94,7 @@ public interface Repository <T extends Persistable<?>>{
 	 * @see #findOne(Serializable)
 	 * @return Uma lista com todos os registros no intervalo da paginação.
 	 */
-	List<T> findAll(Class<T> clazz,PageRequest page);	
+	<T extends Persistable<?>> List<T> findAll(Class<T> clazz,PageRequest page);	
 	
 	/**
 	 * Remove um registro do banco de dados pelo seu ID.
@@ -112,7 +112,7 @@ public interface Repository <T extends Persistable<?>>{
 	 * @see #delete(Serializable)
 	 * @param entity
 	 */
-	void delete(T entity);
+	<T extends Persistable<?>> void delete(T entity);
 	
 	/**
 	 * Count dos registros da tabela mapeada pela classe {@link #setClazz(Class)}
@@ -120,6 +120,6 @@ public interface Repository <T extends Persistable<?>>{
 	 * @see #setClazz(Class)
 	 * @return
 	 */
-	Long count(Class<T> clazz);
+	<T extends Persistable<?>> Long count(Class<T> clazz);
 	
 }

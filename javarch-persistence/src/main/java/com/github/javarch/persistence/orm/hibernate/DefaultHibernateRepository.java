@@ -33,8 +33,6 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projection;
 import org.hibernate.criterion.Projections;
 import org.hibernate.transform.AliasToBeanResultTransformer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
@@ -44,8 +42,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.github.javarch.persistence.NamedQueryParameter;
 import com.github.javarch.persistence.PageRequest;
+import com.github.javarch.persistence.Persistable;
 import com.github.javarch.persistence.QueryParameter;
 import com.github.javarch.support.ParameterizedTypes;
+import com.github.javarch.support.log.Logger;
+import com.github.javarch.support.log.LoggerFactory;
 import com.google.common.base.Preconditions;
 
 import static com.google.common.base.Preconditions.*;
@@ -62,13 +63,11 @@ import static com.google.common.base.Preconditions.*;
 @Component("defaultRepository")
 @Transactional(propagation=Propagation.REQUIRED)
 @Scope(value=BeanDefinition.SCOPE_PROTOTYPE)
-public class DefaultHibernateRepository<T extends AbstractPersistable> implements HibernateRepository<T>{
+public class DefaultHibernateRepository implements HibernateRepository {
 	 
 	private SessionFactory sf = null;
- 
 	
 	private static final Logger LOG = LoggerFactory.getLogger(DefaultHibernateRepository.class);
-
 	
 	@Autowired
 	public DefaultHibernateRepository(SessionFactory sf) {			
@@ -83,7 +82,7 @@ public class DefaultHibernateRepository<T extends AbstractPersistable> implement
 		return sf.openStatelessSession();
 	}
 	
-	public T saveOrUpdate(T entity) {
+	public <T extends Persistable<?>> T saveOrUpdate(T entity) {
 		if ( entity.isNew() ){
 			getCurrentSession().save(entity);
 		}else{
@@ -93,21 +92,21 @@ public class DefaultHibernateRepository<T extends AbstractPersistable> implement
 		return entity;
 	}
 
-	public void delete(T entity) {		
+	public <T extends Persistable<?>> void delete(T entity) {		
 		getCurrentSession().delete(entity);
 	}
 
-	public T findOne(Class<T> clazz, Serializable id) { 
+	public <T extends Persistable<?>> T findOne(Class<T> clazz, Serializable id) { 
 		return (T)getCurrentSession().get( clazz , id);		
 	}
 
 
-	public T getReference(Class<T> clazz, Serializable id) {
+	public <T extends Persistable<?>> T getReference(Class<T> clazz, Serializable id) {
 		return (T)getCurrentSession().byId(clazz).getReference(id);
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<T> findAll(Class<T> clazz) { 
+	public <T extends Persistable<?>> List<T> findAll(Class<T> clazz) { 
 		return createCriteria(clazz).list();
 	}
 	
@@ -117,29 +116,29 @@ public class DefaultHibernateRepository<T extends AbstractPersistable> implement
 
 	
 	@SuppressWarnings("unchecked")
-	public List<T> findAll(Class<T> clazz, PageRequest page) {
+	public <T extends Persistable<?>> List<T> findAll(Class<T> clazz, PageRequest page) {
 		return createCriteria(clazz).setFirstResult(page.getStartingAt())
 				.setMaxResults(page.getMaxPerPage()).list();
 	}
 	
 
 	
-	public Long count(Class<T> clazz) { 
+	public <T extends Persistable<?>> Long count(Class<T> clazz) { 
 		Long count = (Long) createCriteria(clazz).setProjection(
 							Projections.rowCount()).uniqueResult();
 		return (count == null) ? 0L : count;
 	}
 
-	protected Criteria createCriteria(Class<T> clazz) {
+	protected <T extends Persistable<?>> Criteria createCriteria(Class<T> clazz) {
 		return getCurrentSession().createCriteria(clazz);
 	}	
 	
-	public T findOneByNamedQuery(String namedQuery) {
+	public <T extends Persistable<?>> T findOneByNamedQuery(String namedQuery) {
 		return findOneByNamedQuery(namedQuery, null);
 	}
 
 	
-	public T findOneByNamedQuery(String namedQuery, NamedQueryParameter parameters) {
+	public <T extends Persistable<?>> T findOneByNamedQuery(String namedQuery, NamedQueryParameter parameters) {
 		List<T> result = findAllByNamedQuery(namedQuery, parameters);
 		if (! result.isEmpty() ){
 			return result.get(0);
@@ -148,12 +147,12 @@ public class DefaultHibernateRepository<T extends AbstractPersistable> implement
 	}	
 	
 	
-	public List<T> findAllByNamedQuery(String namedQuery) {		
+	public <T extends Persistable<?>> List<T> findAllByNamedQuery(String namedQuery) {		
 		return findAllByNamedQuery(namedQuery, null);
 	}
 	
 	
-	public List<T> findAllByNamedQuery(String namedQuery, NamedQueryParameter parameters) {
+	public <T extends Persistable<?>> List<T> findAllByNamedQuery(String namedQuery, NamedQueryParameter parameters) {
 
 		Query query = getCurrentSession().getNamedQuery(namedQuery);
 		// Method that will populate parameters if they are passed not null and empty
@@ -172,7 +171,7 @@ public class DefaultHibernateRepository<T extends AbstractPersistable> implement
 	}
 
 	
-	public List<T> findAll(Class<T> clazz, Order... order) {
+	public <T extends Persistable<?>> List<T> findAll(Class<T> clazz, Order... order) {
 		Criteria criteria = createCriteria(clazz);
 		addOrder(criteria, order);
 		return criteria.list();
@@ -189,7 +188,7 @@ public class DefaultHibernateRepository<T extends AbstractPersistable> implement
 	}
 
 	
-	public List<T> findAll( Class<T> clazz, Projection projecoes, Order... order) {
+	public <T extends Persistable<?>> List<T> findAll( Class<T> clazz, Projection projecoes, Order... order) {
 		Criteria criteria = createCriteria(clazz);
 		addOrder(criteria, order).setProjection(projecoes)
 				.setResultTransformer( new AliasToBeanResultTransformer( clazz ));
@@ -200,7 +199,7 @@ public class DefaultHibernateRepository<T extends AbstractPersistable> implement
 	 * @param
 	 * @return
 	 */
-	public T findOneByExample(T objeto) {		
+	public <T extends Persistable<?>> T findOneByExample(T objeto) {		
 		Example example = createExemple(objeto);
 		Criteria criteria = createCriteria( (Class<T>)objeto.getClass() ).add(example);
 		return (T)criteria.uniqueResult();
@@ -216,7 +215,7 @@ public class DefaultHibernateRepository<T extends AbstractPersistable> implement
 	 *            lista de critérios de ordenação
 	 * @return Lista de objetos retornada
 	 */
-	public List<T> findAllByExample(T objeto, Order... ordenacoes) {
+	public <T extends Persistable<?>> List<T> findAllByExample(T objeto, Order... ordenacoes) {
 		return findAllByExample(objeto, null, ordenacoes);
 	}
 
@@ -231,7 +230,7 @@ public class DefaultHibernateRepository<T extends AbstractPersistable> implement
 	 *            lista de critérios de ordenação.
 	 * @return Lista de orden
 	 */
-	public List<T> findAllByExample(T objeto, PageRequest page , Order... ordenacoes) {
+	public <T extends Persistable<?>> List<T> findAllByExample(T objeto, PageRequest page , Order... ordenacoes) {
 		Example example = createExemple(objeto);
 		Criteria criteria = createCriteria( (Class<T>)objeto.getClass() ).add(example);
 		if( page != null ){
@@ -251,7 +250,7 @@ public class DefaultHibernateRepository<T extends AbstractPersistable> implement
 	 *            sobre o qual o Example será criado
 	 * @return em objeto do tipo Example
 	 */
-	protected Example createExemple(T objeto) {
+	protected Example createExemple(Object objeto) {
 
 		Example example = Example.create(objeto);
 		example.enableLike(MatchMode.ANYWHERE);

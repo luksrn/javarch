@@ -1,4 +1,4 @@
-package com.github.javarch.jsf;
+package com.github.javarch.jsf.mbeans;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -21,19 +21,19 @@ public abstract class AbstractFormManagedBean  <T extends Persistable<?>> extend
 	private static final long serialVersionUID = 241528714229926461L;
 
 	@Logging
-	protected Logger log; //private static final logger log = loggerFactory.getlogger(AbstractCreateManagedBean.class);	 
+	protected Logger log;	 
+	
+	@Inject
+	protected Repository repository;
+
+	@Inject
+	protected MessageContext messageContext;
 	
 	protected String outcomeSuccess;
 	
 	protected String outcomeOnValidationsError;
 
 	protected String outcomeOnError;
-	
-	@Inject
-	protected Repository<T> repository;
-
-	@Inject
-	protected MessageContext jsfMessageContext;
 	
 	protected BeanValidation useBeanValidation(){
 		return null;
@@ -54,44 +54,44 @@ public abstract class AbstractFormManagedBean  <T extends Persistable<?>> extend
 			
 			if( Optional.fromNullable(validator).isPresent() ){
 			
-				BindingResult errors = new BindException( getEntidade() , getEntityName() );
-				validator.validate( getEntidade() , errors );
+				BindingResult errors = new BindException( getEntity() , getEntityName() );
+				validator.validate( getEntity() , errors );
 				
 				if ( errors.hasErrors() ){
 					log.debug("Gerando erros {} mensagens de erros no objeto FacesMessage.", errors.getErrorCount());
 					
-					jsfMessageContext.addError(errors);
+					messageContext.addError(errors);
 					
 					return outcomeOnValidationsError;
 				}
 			}
 				
 		 
-			log.debug("execute onAction({}) ", entidade );
+			log.debug("execute onAction({}) ", entity );
 							
-			onAction( entidade );
+			onAction( entity );
 
-			log.debug("execute onAction {} with success!", entidade );
+			log.debug("execute onAction {} with success!", entity );
 			
-			jsfMessageContext.addInfo( getMessage( getClass().getSimpleName() + ".create.success" ) );
+			messageContext.addInfo( messageContext.getMessageI18n( getClass().getSimpleName() + ".create.success" ) );
 				
 			log.debug("outcome after action = {}", outcomeSuccess);
 
 			return outcomeSuccess;			
 		
 		} catch ( Exception e ) {									
-			log.error("Entity: " + entidade + ". Detalhes do erro são:" , e);
+			log.error("Entity: " + entity + ". Detalhes do erro são:" , e);
 			
-			jsfMessageContext.addError( getMessage( getClass().getSimpleName()  + ".save.exception" , e.getMessage() ) );
+			messageContext.addError( messageContext.getMessageI18n( getClass().getSimpleName()  + ".save.exception" , e.getMessage() ) );
 			
 			return outcomeOnError;
 		}
 	}
 
 	private void checkPreconditions() {
-		checkNotNull( entidade , "Entidade a ser persistida não pode ser null");
+		checkNotNull( entity , "Entidade a ser persistida não pode ser null");
 		checkNotNull( repository, "Deve existir um repositório associado ao ManagedBean");
-		checkNotNull( jsfMessageContext,"Deve existir uma injeção do recurso MessageContext");
+		checkNotNull( messageContext,"Deve existir uma injeção do recurso MessageContext");
 	}
 
 	public abstract void onAction(T entidade);

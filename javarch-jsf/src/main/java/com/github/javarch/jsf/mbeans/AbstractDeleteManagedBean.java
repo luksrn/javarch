@@ -1,4 +1,4 @@
-package com.github.javarch.jsf;
+package com.github.javarch.jsf.mbeans;
 
 import com.github.javarch.persistence.Persistable;
 import com.google.common.base.Preconditions;

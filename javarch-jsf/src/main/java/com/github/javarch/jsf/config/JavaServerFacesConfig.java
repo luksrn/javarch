@@ -33,7 +33,11 @@ import org.springframework.context.annotation.ImportResource;
  *
  */
 @Configuration
-@ComponentScan( basePackages = {"com.github.javarch.jsf"})
+@ComponentScan( 
+		basePackages = {"com.github.javarch.jsf"}
+		, excludeFilters= { 
+			@ComponentScan.Filter( Configuration.class ) 
+		} )
 @ImportResource({"classpath*:/applicationContext-support.xml"})
 public class JavaServerFacesConfig {
 		
@@ -72,5 +76,4 @@ public class JavaServerFacesConfig {
 		
 		return custom;		
 	}
-	
 }

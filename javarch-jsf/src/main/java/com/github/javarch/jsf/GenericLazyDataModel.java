@@ -40,14 +40,14 @@ public class GenericLazyDataModel<T extends Persistable<?>> extends LazyDataMode
 
 	private List<T> list;
 
-	private Repository<T> repository;	
+	private Repository  repository;	
 
 	private Class<T> clazz;
 	
 	private static final Logger LOG = LoggerFactory.getLogger(GenericLazyDataModel.class);
 
 	
-	public GenericLazyDataModel(Repository<T> repository, Class<T> clazz) {
+	public GenericLazyDataModel(Repository repository, Class<T> clazz) {
 		super();
 		this.repository = repository;
 		this.clazz = clazz;

@@ -69,7 +69,7 @@ import com.github.javarch.support.spring.Profiles;
 public class HibernateBaseRepositoryTest  { 
 
 	@Autowired
-	private HibernateRepository<User> defaultRepository;	
+	private HibernateRepository defaultRepository;	
 	
 	@Autowired
 	private SessionFactory sf;

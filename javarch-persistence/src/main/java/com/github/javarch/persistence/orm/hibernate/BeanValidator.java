@@ -29,8 +29,9 @@ import org.springframework.validation.BindingResult;
  * Validador das regras de classe de domínio através da JSR 303 (Hibernate Validator)
  * 
  * @author Lucas Oliveira
- *
+ * @See {@link BeanValidator}
  */
+@Deprecated
 public class BeanValidator {
 		
 	

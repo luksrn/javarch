@@ -11,18 +11,46 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 
+import com.github.javarch.jsf.CurrentLocale;
 import com.github.javarch.support.Assert;
+import com.github.javarch.support.MessageSourceAware;
 
 /**
  * 
  * @author luksrn
- *
  */
 @Component
 public class MessageContext {
 	
+	/**
+	 * 
+	 */
 	@Autowired
 	public FacesContextUtils facesContext;
+	
+	/**
+	 * 
+	 */
+	@Autowired
+	private CurrentLocale locale;
+	
+	/**
+	 * Obtém uma mensagem dos arquivos de i18n definidos na arquitetura através 
+	 * da classe MessageSourceAware utilizado o Locale do usuário. 
+	 * 
+	 * 
+	 * @param code - Código que representa a chave do arquivo properties.
+	 * @param args - Possíveis argumentos que a mensagem requisitada utilize.
+	 * 
+	 * @return Em caso de sucesso a mensagem recuperada dos arquivos properties. Caso
+	 * ocorra um erro a mensagem será ???code??? 
+	 * 
+	 * @see MessageSourceAware
+	 * 
+	 */
+	public String getMessageI18n(String code, String ... args ){
+		return MessageSourceAware.getMessage(code, args, locale.getLocale() );
+	}
 	
 
 	/**
