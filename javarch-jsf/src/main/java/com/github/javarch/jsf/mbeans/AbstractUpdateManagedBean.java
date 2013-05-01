@@ -23,23 +23,29 @@ public abstract class AbstractUpdateManagedBean<T extends Persistable<?>> extend
 		if ( ! entity.isNew() ){
 			T entityLoaded = (T)repository.findOne( getGenericType(), entity.getId() );
 			if ( !Optional.of(entityLoaded).isPresent() ) {
+				LOG.debug("Entity with {} not found in database. Invoking handleEntityNotFound()", entity );
 				handleEntityNotFound();
 			}
-			if ( isValidUseEntity( entityLoaded ) ){
-				setEntity( entityLoaded );
-				return "";
+			LOG.debug("Entity {} found. Validating entity with isValidUseEntity()", entityLoaded);
+			if ( !isValidUseEntity( entityLoaded ) ){
+				handleInvalidEntity( entityLoaded );				
 			}
+			setEntity( entityLoaded );
 		}
 	 	
 	 	return "";
 	}
 	
+	protected void handleEntityNotFound(){
+		LOG.error("Default impl of handleEntityNotFound. No action will be performed." );
+	}
+	
 	protected boolean isValidUseEntity(T entityLoaded) {
-		return false;
+		return true;
 	}
 
-	protected void handleEntityNotFound(){
-		LOG.error("Entity {} not found in databse.", entity );
+	private void handleInvalidEntity(T entityLoaded) {
+		LOG.error("Default impl of handleInvalidEntity. No action will be performed..", entity );
 	}
 
 	@Override
