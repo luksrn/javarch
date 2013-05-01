@@ -19,17 +19,22 @@ public abstract class AbstractUpdateManagedBean<T extends Persistable<?>> extend
 	 */
 	@SuppressWarnings("all")
 	public String loadAfterSetViewParamId(){
-		
+		LOG.debug("calling loadAfterSetViewParamId on object {}", entity );
 		if ( ! entity.isNew() ){
+			
 			T entityLoaded = (T)repository.findOne( getGenericType(), entity.getId() );
+			
 			if ( !Optional.of(entityLoaded).isPresent() ) {
 				LOG.debug("Entity with {} not found in database. Invoking handleEntityNotFound()", entity );
 				handleEntityNotFound();
 			}
+			
 			LOG.debug("Entity {} found. Validating entity with isValidUseEntity()", entityLoaded);
+			
 			if ( !isValidUseEntity( entityLoaded ) ){
 				handleInvalidEntity( entityLoaded );				
 			}
+			
 			setEntity( entityLoaded );
 		}
 	 	
