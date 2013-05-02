@@ -24,16 +24,23 @@ package com.github.javarch.support.log;
  */
 public interface Logger {
  
-	public void debug(String message, Object... arguments);
+	void debug(String message, Object... arguments);
  
-	public void error(String message, Object... arguments);
+	void error(String message, Object... arguments);
  
-	public void info(String message, Object... arguments);
+	void info(String message, Object... arguments);
 
-	public void trace(String message, Object... arguments);
+	void trace(String message, Object... arguments);
  
-	public void warn(String message, Object... arguments);
-
-	 
-
+	void warn(String message, Object... arguments);
+	
+	boolean isDebugEnabled();
+	
+	boolean isErrorEnabled();
+	
+	boolean isInfoEnabled();
+	
+	boolean isTraceEnabled();
+		
+	boolean isWarnEnabled();
 }

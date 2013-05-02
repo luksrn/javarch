@@ -91,27 +91,32 @@ public class LoggerImpl implements Logger {
 	}
 
 	
-	private boolean isDebugEnabled() {
+	@Override
+	public boolean isDebugEnabled() {
 		return wrappedLogger.isDebugEnabled();
 	}
 
 	
-	private boolean isErrorEnabled() {
+	@Override
+	public boolean isErrorEnabled() {
 		return wrappedLogger.isErrorEnabled();
 	}
 
 	
-	private boolean isInfoEnabled() {
+	@Override
+	public boolean isInfoEnabled() {
 		return wrappedLogger.isInfoEnabled();
 	}
 
 	
-	private boolean isTraceEnabled() {
+	@Override
+	public boolean isTraceEnabled() {
 		return wrappedLogger.isTraceEnabled();
 	}
 
 	
-	private boolean isWarnEnabled() {
+	@Override
+	public boolean isWarnEnabled() {
 		return wrappedLogger.isWarnEnabled();
 	}
 }
