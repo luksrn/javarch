@@ -42,12 +42,7 @@ public class LoggerImpl implements Logger {
 			}
 		}
 	}
- 
-	@Override
-	public void error(Throwable throwable) {
-		
-	}
-
+  
 	@Override
 	public void error(String message, Object... arguments) {
 		if (isErrorEnabled()) {			
@@ -95,28 +90,28 @@ public class LoggerImpl implements Logger {
 		}
 	}
 
-	@Override
-	public boolean isDebugEnabled() {
+	
+	private boolean isDebugEnabled() {
 		return wrappedLogger.isDebugEnabled();
 	}
 
-	@Override
-	public boolean isErrorEnabled() {
+	
+	private boolean isErrorEnabled() {
 		return wrappedLogger.isErrorEnabled();
 	}
 
-	@Override
-	public boolean isInfoEnabled() {
+	
+	private boolean isInfoEnabled() {
 		return wrappedLogger.isInfoEnabled();
 	}
 
-	@Override
-	public boolean isTraceEnabled() {
+	
+	private boolean isTraceEnabled() {
 		return wrappedLogger.isTraceEnabled();
 	}
 
-	@Override
-	public boolean isWarnEnabled() {
+	
+	private boolean isWarnEnabled() {
 		return wrappedLogger.isWarnEnabled();
 	}
 }
