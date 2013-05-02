@@ -6,7 +6,6 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 import org.springframework.validation.Errors;
 
@@ -20,6 +19,18 @@ public abstract class BeanValidation implements org.springframework.validation.V
 	
 	@Autowired
 	private Validator validator;
+	
+	private boolean useValidationsByAnnotations;
+	
+	public BeanValidation() {
+		super();
+		this.useValidationsByAnnotations = true;
+	}
+	
+	public BeanValidation(boolean useValidationsByAnnotations) {
+		super();
+		this.useValidationsByAnnotations = useValidationsByAnnotations;
+	}
 
 	@Override
 	public boolean supports(Class<?> clazz) {
@@ -31,13 +42,15 @@ public abstract class BeanValidation implements org.springframework.validation.V
 
 		Assert.notNull(target, "Não é possivel aplicar regras de validação JSR-303 em um objeto nulo.");
 		
-		Set<ConstraintViolation<Object>> constraintViolations = validator.validate(target);
-		
-	    for (ConstraintViolation<Object> constraintViolation : constraintViolations) {
-	        String propertyPath = constraintViolation.getPropertyPath().toString();
-	        String message = constraintViolation.getMessage();
-	        errors.rejectValue(propertyPath, "", message);
-	    }
+		if ( useValidationsByAnnotations ){
+			Set<ConstraintViolation<Object>> constraintViolations = validator.validate(target);
+			
+		    for (ConstraintViolation<Object> constraintViolation : constraintViolations) {
+		        String propertyPath = constraintViolation.getPropertyPath().toString();
+		        String message = constraintViolation.getMessage();
+		        errors.rejectValue(propertyPath, "", message);
+		    }
+		}
 	    
 	    addExtraValidation(target, errors);
 	}
