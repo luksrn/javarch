@@ -35,6 +35,14 @@ public abstract class AbstractFormManagedBean  <T extends Persistable<?>> extend
 
 	protected String outcomeOnError;
 	
+	/**
+	 * Define se o objeto é readyonly ou não. Pode ser utilizado em conjunto com formulários
+	 * para habilitar ou não a edição de informações em formulários.
+	 */
+	protected boolean isReadyOnly = true;
+	
+
+	
 	protected BeanValidation useBeanValidation(){
 		return null;
 	}
@@ -95,4 +103,22 @@ public abstract class AbstractFormManagedBean  <T extends Persistable<?>> extend
 	}
 
 	public abstract void onAction(T entidade);
+	
+	/**
+	 * Informa se as informações da view serão apenas leitura.
+	 * @return
+	 */
+	public final boolean isReadyOnly() {
+		return isReadyOnly;
+	}
+
+
+	/**
+	 * Seta o atributo do bean como ready only.
+	 * 
+	 * @param isReadyOnly
+	 */
+	public final void setReadyOnly(boolean isReadyOnly) {
+		this.isReadyOnly = isReadyOnly;
+	}
 }

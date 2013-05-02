@@ -11,8 +11,7 @@ import com.github.javarch.support.log.LoggerFactory;
  
  
  
-/**
- * @author  Neil Griffin
+/** 
  */
 public class DebugPhaseListener implements PhaseListener {
 
@@ -32,21 +31,18 @@ public class DebugPhaseListener implements PhaseListener {
 		return PhaseId.ANY_PHASE;
 	}
 	
-
 	private void debugPhase(String phase, PhaseEvent phaseEvent) {
+		 
+		PhaseId phaseId = phaseEvent.getPhaseId();
+		UIViewRoot uiViewRoot = phaseEvent.getFacesContext().getViewRoot();
 
-		if (logger.isDebugEnabled()) {
-			PhaseId phaseId = phaseEvent.getPhaseId();
-
-			String viewId = null;
-			UIViewRoot uiViewRoot = phaseEvent.getFacesContext().getViewRoot();
-
-			if (uiViewRoot != null) {
-				viewId = uiViewRoot.getViewId();
-			}
-
-			logger.debug( phase + " phaseId=[{0}] viewId=[{1}]", phaseId.toString(), viewId);
+		String viewId = null;
+		if (uiViewRoot != null) {
+			viewId = uiViewRoot.getViewId();
 		}
+
+		logger.debug( phase + " phaseId=[{0}] viewId=[{1}]", phaseId.toString(), viewId);
+		
 		
 	}
 }

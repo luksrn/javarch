@@ -55,13 +55,7 @@ public abstract class AbstractManagedBean<T> implements Serializable {
 	 */
 	private Class<T> clazz;
 	
-	/**
-	 * Define se o objeto é readyonly ou não. Pode ser utilizado em conjunto com formulários
-	 * para habilitar ou não a edição de informações em formulários.
-	 */
-	protected boolean isReadyOnly = true;
-	
-	
+		
 	/**
 	 * Construtor padrão do abstractManagedBean. Sua responsabilidade é inicializar o
 	 * objeto do tipo genérico que será gerenciado pelo MBean.
@@ -159,22 +153,6 @@ public abstract class AbstractManagedBean<T> implements Serializable {
 		this.entity = entidade;
 	}
 
-	/**
-	 * Informa se as informações da view serão apenas leitura.
-	 * @return
-	 */
-	public final boolean isReadyOnly() {
-		return isReadyOnly;
-	}
 
-
-	/**
-	 * Seta o atributo do bean como ready only.
-	 * 
-	 * @param isReadyOnly
-	 */
-	public final void setReadyOnly(boolean isReadyOnly) {
-		this.isReadyOnly = isReadyOnly;
-	}
  
 }
