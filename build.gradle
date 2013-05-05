@@ -7,6 +7,7 @@ allprojects {
 		maven { url 'http://repo.springsource.org/release' }
 		maven { url 'http://repository.primefaces.org' }
 		maven { url 'http://repository.jboss.org/nexus/content/groups/public' }
+		maven { url 'https://oss.sonatype.org/content/repositories/snapshots' } 
 	}
 	
 	project.ext.springFrameworkVersion = '3.2.2.RELEASE'
@@ -170,8 +171,9 @@ project('javarch-jsf') {
                 "commons-io:commons-io:2.4",
                 "com.sun.faces:jsf-api:2.1.20",
                 "com.sun.faces:jsf-impl:2.1.20",
-                "javax.servlet:servlet-api:2.5"
-		 
+                "javax.servlet:servlet-api:2.5",
+				'org.ocpsoft.prettytime:prettytime:2.1.2.Final',
+				'org.ocpsoft.prettytime:prettytime-integration-jsf:2.1.2.Final'					 
 	}
 	
 	version = '0.2-SNAPSHOT'
@@ -196,7 +198,8 @@ project('javarch-spring-mvc') {
 			"org.thymeleaf:thymeleaf:2.0.14",
 			"org.thymeleaf:thymeleaf-spring3:2.0.14",
 			"org.thymeleaf.extras:thymeleaf-extras-springsecurity3:1.0.0-beta2",
-			"nz.net.ultraq.web.thymeleaf:thymeleaf-layout-dialect:1.0.5"
+			"nz.net.ultraq.web.thymeleaf:thymeleaf-layout-dialect:1.0.5",			
+			'org.ocpsoft.prettytime:prettytime:2.1.2.Final'
 		
 	}	
 	version = '0.1-SNAPSHOT'
