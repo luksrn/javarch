@@ -18,7 +18,6 @@ package com.github.javarch.support.validation;
 import java.util.Set;
 
 import javax.validation.ConstraintViolation;
-import javax.validation.Validator;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
@@ -29,20 +28,20 @@ import org.springframework.validation.Errors;
  * 
  *
  */
-public abstract class BeanValidation implements org.springframework.validation.Validator {
+public abstract class Validator implements org.springframework.validation.Validator {
 	
 	
 	@Autowired
-	private Validator validator;
+	private javax.validation.Validator validator;
 	
 	private boolean useValidationsByAnnotations;
 	
-	public BeanValidation() {
+	public Validator() {
 		super();
 		this.useValidationsByAnnotations = true;
 	}
 	
-	public BeanValidation(boolean useValidationsByAnnotations) {
+	public Validator(boolean useValidationsByAnnotations) {
 		super();
 		this.useValidationsByAnnotations = useValidationsByAnnotations;
 	}

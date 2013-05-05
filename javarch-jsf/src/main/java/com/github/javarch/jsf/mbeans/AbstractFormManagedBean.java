@@ -30,7 +30,7 @@ import com.github.javarch.persistence.Persistable;
 import com.github.javarch.persistence.Repository;
 import com.github.javarch.support.log.Logger;
 import com.github.javarch.support.log.Logging;
-import com.github.javarch.support.validation.BeanValidation;
+import com.github.javarch.support.validation.Validator;
 import com.google.common.base.Optional;
 
 public abstract class AbstractFormManagedBean  <T extends Persistable<?>> extends AbstractManagedBean<T>{
@@ -60,7 +60,7 @@ public abstract class AbstractFormManagedBean  <T extends Persistable<?>> extend
 	
 
 	
-	protected BeanValidation useBeanValidation(){
+	protected Validator useValidator(){
 		return null;
 	}
 	
@@ -75,7 +75,7 @@ public abstract class AbstractFormManagedBean  <T extends Persistable<?>> extend
 		try{			
 			checkPreconditions();
 			
-			BeanValidation validator = useBeanValidation();
+			Validator validator = useValidator();
 			
 			if( Optional.fromNullable(validator).isPresent() ){
 			
