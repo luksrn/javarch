@@ -18,8 +18,8 @@ allprojects {
 
 subprojects {
     apply plugin: 'java'	
-    apply plugin: 'eclipse-wtp'		
-	
+    apply plugin: 'eclipse-wtp'	
+	apply plugin: "sonar-runner"	
 	apply plugin: 'maven'
 	
     repositories {
