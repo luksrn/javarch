@@ -12,8 +12,8 @@ public class IntegerHelper {
 
 		try {
 			valueAsInt = Integer.parseInt(value);
-		}
-		catch (NumberFormatException e) {
+		}catch (NumberFormatException e) {
+			return defaultValue;
 		}
 
 		return valueAsInt;
