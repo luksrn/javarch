@@ -1,35 +1,62 @@
 package com.github.javarch.jsf.context;
 
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
+import static org.junit.Assert.assertNotNull;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.validation.constraints.AssertTrue;
 
-import org.junit.Ignore;
+import junit.framework.Assert;
+
+import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 
-@Ignore
+@RunWith(PowerMockRunner.class)
+@PrepareForTest( { FacesContext.class })
 public class MessageContextTest {
+	
+	@Mock
+	FacesContext facesContext;
 
-	private MessageContext instance;
+	@Mock
+	FacesContextUtils facesContextUtils;
+	
+	MessageContext instance;
+	 
 
-	@Test
-	public void testAddInfo() {
-		
-		FacesContext facesContextMock = mock(FacesContext.class);		
-	//	Mockito.when(facesContextMock.addMessage(null, Mockito.any(FacesMessage.class) ) );				
+	@Before
+	public void setUp() throws Exception {
 		instance = new MessageContext();
-	//	instance.setFacesContext(facesContextMock);
+
+        PowerMockito.mockStatic(FacesContext.class);
+        PowerMockito.doReturn(this.facesContext).when(FacesContext.class, "getCurrentInstance");        
+		Mockito.when(this.facesContext.getMessageList()).thenReturn( new ArrayList<FacesMessage>() );
 		
-		// add mensagem
-		instance.addInfo("Mensagem Test");
+		Mockito.when(this.facesContextUtils.getFacesContext()).thenReturn(this.facesContext);
 		
-		// mensagem adicionada no FacesContext
-		verify(facesContextMock).addMessage(null, any(FacesMessage.class));
+		instance.setFacesContext(facesContextUtils);
 	}
 
+	@Test
+	public void deveRetornarUmaListaVazia() { 
+		List<FacesMessage> mensagens = instance.getMessages();
+		assertNotNull(mensagens);
+	}
+	
+	@Test
+	public void deveRetornarUmaMensagemInfoQuandoAdicionarMensagemInfo(){
+		instance.addInfo("Mensagem Info!");		
  
+	}
 
 }
