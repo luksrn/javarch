@@ -39,9 +39,12 @@ subprojects {
 					// optional dependencies for using Spock
 					"org.hamcrest:hamcrest-core:1.2", // only necessary if Hamcrest matchers are used
 					"cglib:cglib-nodep:2.2.2",          // allows mocking of classes (in addition to interfaces)
-					"org.objenesis:objenesis:1.2"    // allows mocking of classes without default constructor (together with CGLIB)
-				  
-					
+					"org.objenesis:objenesis:1.2",    // allows mocking of classes without default constructor (together with CGLIB)
+					"org.powermock:powermock-module-junit4:1.5",
+					"org.powermock:powermock-api-mockito:1.5"
+			  
+					 
+				
 				
 		
 		compile "org.codehaus.groovy:groovy-all:1.8.6",
@@ -184,7 +187,9 @@ project('javarch-jsf') {
                 "com.sun.faces:jsf-impl:2.1.20",
                 "javax.servlet:servlet-api:2.5",
 				'org.ocpsoft.prettytime:prettytime:2.1.2.Final',
-				'org.ocpsoft.prettytime:prettytime-integration-jsf:2.1.2.Final'					 
+				'org.ocpsoft.prettytime:prettytime-integration-jsf:2.1.2.Final'		
+		
+		testCompile  "javax.el:javax.el-api:2.2.1"		 
 	}
 	
 	version = '0.2-SNAPSHOT'
