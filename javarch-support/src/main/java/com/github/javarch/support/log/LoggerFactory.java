@@ -13,13 +13,12 @@
 * License for the specific language governing permissions and limitations under
 * the License.
 */
-
-
 package com.github.javarch.support.log;
 
 
 /**  
- * * In order to minimize dependencies, this class provides as a layer of abstraction over different logging mechanisms
+ * In order to minimize dependencies, this class provides as a layer of 
+ * abstraction over different logging mechanisms
  */
 public class LoggerFactory {
 
@@ -48,8 +47,7 @@ public class LoggerFactory {
 			if (LOG4J_AVAILABLE) {
 				logger = new LoggerImpl(className);
 			}
-		}
-		catch (NoClassDefFoundError e) {
+		} catch (NoClassDefFoundError e) {
 			System.err.println(e.getMessage());
 		}
 

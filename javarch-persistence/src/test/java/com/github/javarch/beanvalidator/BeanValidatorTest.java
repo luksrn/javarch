@@ -1,6 +1,7 @@
 package com.github.javarch.beanvalidator;
 
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.validation.BindingResult;
 
@@ -13,6 +14,8 @@ import com.github.javarch.persistence.orm.hibernate.BeanValidator;
  * @author lucas
  *
  */
+@Deprecated
+@Ignore
 public class BeanValidatorTest {
 	
 	@Test(expected=IllegalArgumentException.class)
