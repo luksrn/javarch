@@ -26,7 +26,7 @@ import com.github.javarch.persistence.Persistable;
  * @param <PK>
  */
 @MappedSuperclass
-@Filter(name="ativosOuInativos",condition="ativo = :status")
+@Filter(name="ativosOuInativos",condition="active = :status")
 @FilterDef(name="ativosOuInativos",parameters={
 		@ParamDef(type="boolean",name="status")
 })
