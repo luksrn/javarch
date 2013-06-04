@@ -46,7 +46,7 @@ public abstract class AbstractPersistable implements Persistable<Long> ,Serializ
 	 * Flag que indica se o registro está ativo ou não. Exclusão lógica.
 	 * 
 	 */
-	private Boolean ativo = Boolean.TRUE;
+	private Boolean active = Boolean.TRUE;
 	/**
 	 * Obtém o valor do Identificador da entidade.
 	 */
@@ -73,6 +73,10 @@ public abstract class AbstractPersistable implements Persistable<Long> ,Serializ
 	public boolean isNew() {
 
 		return null == getId();
+	}
+	
+	public boolean isActive(){
+		return active;
 	}
 
 	/**

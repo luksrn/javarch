@@ -47,4 +47,12 @@ public interface Persistable <ID extends Serializable> extends Serializable {
 	 * @return true se o objeto estiver no estado novo. false caso contrario.
 	 */
 	boolean isNew();
+	
+	/**
+	 * Informa se o objeto está ativo ou não. Objetos ativos possuem um registro válido
+	 * no banco de dados.
+	 *  
+	 * @return
+	 */
+	boolean isActive();
 }
