@@ -31,10 +31,10 @@ import com.github.javarch.support.spring.Profiles;
 @ContextConfiguration(
 		loader=AnnotationConfigContextLoader.class) 
 @ActiveProfiles({ Profiles.TEST } )
-public class BaseDataBaseTest {
+public class BaseDataBaseIntegrationTest {
 	
 
-	private static final Log logger = LogFactory.getLog(BaseDataBaseTest.class);
+	private static final Log logger = LogFactory.getLog(BaseDataBaseIntegrationTest.class);
 
 	@BeforeClass
 	public static void beforeClass(){

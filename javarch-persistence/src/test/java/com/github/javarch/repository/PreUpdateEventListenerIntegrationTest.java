@@ -39,7 +39,7 @@ import com.github.javarch.support.spring.Profiles;
 @TransactionConfiguration(defaultRollback=false)
 @Transactional 
 @ActiveProfiles({ Profiles.TEST , "migration" } )
-public class PreUpdateEventListenerTest {
+public class PreUpdateEventListenerIntegrationTest {
 
 	@Autowired
 	private HibernateRepository defaultRepository;	
