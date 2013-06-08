@@ -1,0 +1,20 @@
+buildscript {
+  repositories {
+	mavenCentral()
+	mavenLocal()
+  }
+
+  dependencies {
+	compile "org.vbossica:gradle-docbook-plugin:1.0-SNAPSHOT"
+  }
+}
+
+docbook {
+  //userConfig = file([location of fop.xconf file")
+  //classpath = buildscript.configurations.classpath
+}
+
+task generateArticle(type: org.vbossica.gradle.DocbookPdfTask) {
+  //stylesheet = file([location of xsl stylesheet file])
+  sourceFileName = 'javarch-dev-guide'
+}
