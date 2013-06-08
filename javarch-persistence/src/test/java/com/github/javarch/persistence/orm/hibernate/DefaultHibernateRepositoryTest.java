@@ -1,5 +1,6 @@
 package com.github.javarch.persistence.orm.hibernate;
 
+import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.junit.Before;
@@ -8,6 +9,7 @@ import static org.mockito.Mockito.*;
 
 import com.github.javarch.persistence.Persistable;
 
+@SuppressWarnings("all")
 public class DefaultHibernateRepositoryTest {
 
 	private HibernateRepository instance;
@@ -28,7 +30,7 @@ public class DefaultHibernateRepositoryTest {
 	@Test
 	public void deveSalvarQuandoObjetoNaoForPersistente(){
 		
-		Persistable<Integer> persistable = mock(Persistable.class);
+		Persistable persistable = mock(Persistable.class);
 		
 		when(persistable.isNew()).thenReturn(true);
 		
@@ -43,7 +45,7 @@ public class DefaultHibernateRepositoryTest {
 	@Test
 	public void deveAtualizarQuandoObjetoForPersistente(){
 		
-		Persistable<Integer> persistable = mock(Persistable.class);
+		Persistable persistable = mock(Persistable.class);
 		
 		when(persistable.isNew()).thenReturn(false);
 		
@@ -55,6 +57,17 @@ public class DefaultHibernateRepositoryTest {
 		verify( session , never() ).save( any(Persistable.class) );
 	}
 	
+	@Test
+	public void deveRealizarConsultasPorFindAll(){
+		Criteria criteria = mock(Criteria.class);
+		when( session.createCriteria(Persistable.class)).thenReturn( criteria );		
+		
+		instance.findAll( Persistable.class );
+		
+		verify( sf ).getCurrentSession();
+		verify( session ).createCriteria(Persistable.class);
+		verify( criteria ).list();
+	} 
 	
 
 }

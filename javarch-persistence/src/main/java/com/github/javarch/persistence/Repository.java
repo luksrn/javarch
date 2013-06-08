@@ -102,16 +102,7 @@ public interface Repository {
 	 * @return Uma lista com todos os registros no intervalo da paginação.
 	 */
 	<T extends Persistable<?>> List<T> findAll(Class<T> clazz,PageRequest page);	
-	
-	/**
-	 * Remove um registro do banco de dados pelo seu ID.
-	 * 
-	 * @see #setClazz(Class)
-	 * @See {@link #delete(Persistable)}
-	 * @param id
-	 */
-	void delete(Serializable id);
-	
+ 
 	/**
 	 * Remove um registro do banco de dados pelo seu ID.
 	 * 

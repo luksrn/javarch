@@ -108,12 +108,7 @@ public class DefaultHibernateRepository implements HibernateRepository {
 	@SuppressWarnings("unchecked")
 	public <T extends Persistable<?>> List<T> findAll(Class<T> clazz) { 
 		return createCriteria(clazz).list();
-	}
-	
-	public void delete(Serializable id) {
-		getCurrentSession().delete(id);
-	}
-
+	} 
 	
 	@SuppressWarnings("unchecked")
 	public <T extends Persistable<?>> List<T> findAll(Class<T> clazz, PageRequest page) {
