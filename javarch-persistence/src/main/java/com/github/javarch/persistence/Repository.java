@@ -50,7 +50,10 @@ public interface Repository {
 	/**
 	 * Obtain an entity reference without initializing its data
 
-		Sometimes referred to as lazy loading, the ability to obtain a reference to an entity without having to load its data is hugely important. The most common case being the need to create an association between an entity and another, existing entity.
+		Sometimes referred to as lazy loading, the ability to obtain a reference 
+		to an entity without having to load its data is hugely important. The most 
+		common case being the need to create an association between an entity and 
+		another, existing entity.
 		
 		Example 3.3. Example of obtaining an entity reference without initializing its data
 		
@@ -63,7 +66,11 @@ public interface Repository {
 		
 		getReference
 
-    	Should be used in cases where the identifier is assumed to exist, where non-existence would be an actual error. Should never be used to test existence. That is because this method will prefer to create and return a proxy if the data is not already associated with the Session rather than hit the database. The quintessential use-case for using this method is to create foreign-key based associations.
+    	Should be used in cases where the identifier is assumed to exist, where non-existence 
+    	would be an actual error. Should never be used to test existence. That is because this 
+    	method will prefer to create and return a proxy if the data is not already associated 
+    	with the Session rather than hit the database. The quintessential use-case for using 
+    	this method is to create foreign-key based associations.
 
 	 * @param id
 	 * @return
