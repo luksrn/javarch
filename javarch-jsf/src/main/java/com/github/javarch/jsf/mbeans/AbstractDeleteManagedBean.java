@@ -25,7 +25,7 @@ public class AbstractDeleteManagedBean <T extends Persistable<?>> extends Abstra
 	@Override
 	public void onAction(T entidade) {
 		Preconditions.checkState( entidade.getId() != null );
-		repository.delete( entidade.getId() );		
+		repository.delete( entidade );		
 	}
 
 }
