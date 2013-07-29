@@ -2,9 +2,7 @@ javarch
 =======
 Simple JavaEE application reference architecture based on JavaServer Faces, Spring Framework, Hibernate.
 
-This project was developed initially to improve my knowledge in software development during the period when I was studying my course on system development.
-
-I am offering a set of software components that aims to be a reference architecture for web applications using JavaServer Faces, Spring framework and Hibernate. 
+This project was developed initially to improve my knowledge in software development during the period when I was studying my course on system development. I am offering a set of software components that aims to be a reference architecture for web applications using JavaServer Faces, Spring framework and Hibernate. 
 
 A more detailed documentation will be developed with the aim of presenting the architecture making a comparison with the good practices that have led me to develop each component.
 
